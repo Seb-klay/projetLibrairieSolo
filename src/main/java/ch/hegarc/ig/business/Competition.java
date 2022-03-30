@@ -1,18 +1,28 @@
 package ch.hegarc.ig.business;
 
+import ch.hegarc.ig.json.CustomLocalDateDeserializer;
+import ch.hegarc.ig.json.CustomLocalDateSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+
 public class Competition {
 
     private long id;
+
     @JsonProperty("competition")
     private String name;
+    @JsonDeserialize(using = CustomLocalDateDeserializer.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = CustomLocalDateSerializer.class)
     private LocalDate date;
     private List<Athlete> athletes = new ArrayList<Athlete>();
 
@@ -71,7 +81,7 @@ public class Competition {
         strBuilder.append("Competition : \n");
         strBuilder.append("id=" + id + "\n");
         strBuilder.append("name=" + name + "\n");
-        strBuilder.append("date=" + date+ "\n");
+        strBuilder.append("date=" + date + "\n");
         strBuilder.append("athletes=' {" + athletes+ "}\n");
         return strBuilder.toString();
     }

@@ -6,29 +6,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MainReader {
+public class Unmarshalling {
 
-    private static final Logger logger = Logger.getLogger(MainReader.class.getName());
+    private static final Logger logger = Logger.getLogger(Unmarshalling.class.getName());
     
-    public static void JsonReader() {
+    public static void JsonReader(String filename) {
         try {
 
             // ObjectMapper - Ignorer les propriétés inconnues
             ObjectMapper om = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            om.setDateFormat(df);
+            ArrayList listCompetition = om.readValue(new File(filename), new TypeReference<List<Competition>>() {});
 
-            //ObjectMapper om = new ObjectMapper();
+            for (Competition c: (ArrayList<Competition>) listCompetition) {
+                logger.log(Level.INFO, c.toString());
+            }
 
-            //Competition competitions = om.readValue(new File("data.json"), Competition.class);
-            ArrayList listCompetition = om.readValue(new File("data.json"), new TypeReference<List<Competition>>() {});
-            Competition competitions = (Competition) listCompetition.get(0);
-
-            System.out.println(competitions.toString());
-            logger.log(Level.INFO, competitions.toString());
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
         }

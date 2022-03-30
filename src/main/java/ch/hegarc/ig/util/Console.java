@@ -1,6 +1,7 @@
 package ch.hegarc.ig.util;
 
-import ch.hegarc.ig.json.MainReader;
+import ch.hegarc.ig.json.Unmarshalling;
+import ch.hegarc.ig.json.Marshalling;
 import org.apache.commons.cli.*;
 
 import java.util.Scanner;
@@ -38,7 +39,7 @@ public class Console {
                         System.out.println("Import du fichier " + fileName);
 
                         // TODO Import du fichier XML ou JSON
-                        MainReader.JsonReader();
+                        Unmarshalling.JsonReader(fileName);
 
                     } else {
                         printAppHelp();
@@ -53,6 +54,8 @@ public class Console {
                         System.out.println("Export du " + projectName + "dans le fichier " + fileName);
 
                         // TODO Export du fichier JSON
+                        Marshalling.JsonWriter(fileName, projectName);
+
 
                     } else {
                         printAppHelp();

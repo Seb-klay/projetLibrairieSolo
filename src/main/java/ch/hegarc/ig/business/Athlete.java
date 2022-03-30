@@ -13,6 +13,7 @@ public class Athlete {
     private String email;
     private String ville;
     private int annee;
+    @JsonProperty("prixInscription")
     private long somme;
 
     public Athlete() {
