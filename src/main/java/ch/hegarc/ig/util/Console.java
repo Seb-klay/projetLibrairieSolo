@@ -1,5 +1,6 @@
 package ch.hegarc.ig.util;
 
+import ch.hegarc.ig.json.MainReader;
 import org.apache.commons.cli.*;
 
 import java.util.Scanner;
@@ -37,6 +38,7 @@ public class Console {
                         System.out.println("Import du fichier " + fileName);
 
                         // TODO Import du fichier XML ou JSON
+                        MainReader.JsonReader();
 
                     } else {
                         printAppHelp();

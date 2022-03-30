@@ -1,16 +1,18 @@
 package ch.hegarc.ig.business;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 public class Competition {
 
     private long id;
+    @JsonProperty("competition")
     private String name;
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private LocalDate date;
     private List<Athlete> athletes = new ArrayList<Athlete>();
 
@@ -61,5 +63,16 @@ public class Competition {
 
     public void setAthletes(List<Athlete> athletes) {
         this.athletes = athletes;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("Competition : \n");
+        strBuilder.append("id=" + id + "\n");
+        strBuilder.append("name=" + name + "\n");
+        strBuilder.append("date=" + date+ "\n");
+        strBuilder.append("athletes=' {" + athletes+ "}\n");
+        return strBuilder.toString();
     }
 }

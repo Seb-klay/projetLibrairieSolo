@@ -1,8 +1,13 @@
 package ch.hegarc.ig.business;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Athlete {
 
     private long id;
+    @JsonProperty("prenom")
     private String prNom;
     private String nom;
     private String email;
@@ -78,5 +83,19 @@ public class Athlete {
 
     public void setAnnee(int annee) {
         this.annee = annee;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("Athlete : \n");
+        strBuilder.append("id= " + id + "\n");
+        strBuilder.append("prénom= " + prNom + "\n");
+        strBuilder.append("nom= " + nom+ "\n");
+        strBuilder.append("email= " + email+ "\n");
+        strBuilder.append("ville= " + ville+ "\n");
+        strBuilder.append("annee= " + annee+ "\n");
+        strBuilder.append("somme= " + somme+ "\n");
+        return strBuilder.toString();
     }
 }
