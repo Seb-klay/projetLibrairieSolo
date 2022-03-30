@@ -1,5 +1,7 @@
 package ch.hegarc.ig.business;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,7 @@ public class Competition {
 
     private long id;
     private String name;
+
     private LocalDate date;
     private List<Athlete> athletes = new ArrayList<Athlete>();
 
