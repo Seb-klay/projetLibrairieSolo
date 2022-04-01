@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Unmarshalling {
+public class DeserialisationJson {
 
-    private static final Logger logger = Logger.getLogger(Unmarshalling.class.getName());
+    private static final Logger logger = Logger.getLogger(DeserialisationJson.class.getName());
     
     public static void JsonReader(String filename) {
         try {

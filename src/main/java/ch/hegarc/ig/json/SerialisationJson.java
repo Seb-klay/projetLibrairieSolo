@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Marshalling {
+public class SerialisationJson {
 
-    private static final Logger logger = Logger.getLogger(Marshalling.class.getName());
+    private static final Logger logger = Logger.getLogger(SerialisationJson.class.getName());
 
     public static void JsonWriter(String filename, String projectName) {
         try {

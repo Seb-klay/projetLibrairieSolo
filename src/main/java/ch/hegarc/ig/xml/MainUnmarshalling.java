@@ -1,10 +1,14 @@
 package ch.hegarc.ig.xml;
 
+import ch.hegarc.ig.business.Athlete;
+import ch.hegarc.ig.business.Competition;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import java.awt.color.ICC_ColorSpace;
 import java.io.FileInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,23 +19,23 @@ public class MainUnmarshalling {
 
     private MainUnmarshalling() {
     }
-/*
-    private void run() {
+
+    public static void run(String filename) {
 
         try {
-            JAXBContext jc = JAXBContext.newInstance("ch.hegarc.ig.cpo");
+            JAXBContext jc = JAXBContext.newInstance("ch.hegarc.ig");
             
             Unmarshaller unmarshaller = jc.createUnmarshaller();
 
-            XMLStreamReader in = XMLInputFactory.newInstance().createXMLStreamReader(new FileInputStream("Students.xml"));
+            XMLStreamReader in = XMLInputFactory.newInstance().createXMLStreamReader(new FileInputStream(filename));
 
-            JAXBElement<Students> o = (JAXBElement<Students>) unmarshaller.unmarshal(in, Students.class);
+            JAXBElement<Competition> o = (JAXBElement<Competition>) unmarshaller.unmarshal(in, Competition.class);
 
-            Students students = o.getValue();
+            Competition competition = o.getValue();
 
-            for (Students.Student s : students.getStudent()) {
+            for (Athlete a : competition.getAthletes()) {
                 logger.log(Level.INFO,
-                        "{0}, {1}", new Object[]{s.getFirstname(), s.getLastname()});
+                        "{0}", new Object[]{a.getPrNom()});
             }
 
         } catch (Exception ex) {
@@ -39,8 +43,8 @@ public class MainUnmarshalling {
         }
     }
 
-    public static void main(String[] args) {
-        new MainUnmarshalling().run();
-    }*/
+    //public static void main(String[] args) {
+      //  new MainUnmarshalling().run();
+    //}
 
 }
