@@ -17,7 +17,7 @@ public class DeserialisationJson {
 
     private static final Logger logger = Logger.getLogger(DeserialisationJson.class.getName());
     
-    public static void JsonReader(String filename) {
+    public static ArrayList JsonReader(String filename) {
         try {
 
             // ObjectMapper - Ignorer les propriétés inconnues
@@ -29,9 +29,11 @@ public class DeserialisationJson {
             for (Competition c: (ArrayList<Competition>) listCompetition) {
                 logger.log(Level.INFO, c.toString());
             }
+            return listCompetition;
 
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 }

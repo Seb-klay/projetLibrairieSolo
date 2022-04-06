@@ -2,6 +2,7 @@ package ch.hegarc.ig.business;
 
 import ch.hegarc.ig.json.CustomLocalDateDeserializer;
 import ch.hegarc.ig.json.CustomLocalDateSerializer;
+import ch.hegarc.ig.json.CustomLocalDateSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -18,26 +18,34 @@ public class SerialisationJson {
 
     private static final Logger logger = Logger.getLogger(SerialisationJson.class.getName());
 
-    public static void JsonWriter(String filename, String projectName) {
+    public static void JsonWriter(String filename, String projectName, List dataJson) {
         try {
 
             ObjectMapper om = new ObjectMapper();
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             om.setDateFormat(df);
 
+            //test avec un nouvel objet
+
             // Ignorer les champs vide
             //om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            List<Athlete> athletes = new ArrayList<>();
+            /*List<Athlete> athletes = new ArrayList<>();
+
+
             athletes.add(new Athlete(1,"diano","test","diano@diano.com","canadian","diano","Kiev","diano",3,true,false,"diano","test",2002));
             Competition competition = new Competition(2L, projectName, LocalDate.of(2020, 1, 8), athletes);
             List<Competition> competitions = new ArrayList<>();
             competitions.add(competition);
 
             // Ecriture avec pretty print -> retour à la ligne etc.
-            om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), competitions);
+            om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), competitions);*/
+            Competition c = (Competition) dataJson.get(0);
+            c.setName(projectName);
+            dataJson.set(0, c);
+            // Ecriture avec pretty print -> retour à la ligne etc.
+            om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataJson);
             
             logger.log(Level.INFO, "Fichier <"+ filename +"> créé");
-            
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
         }

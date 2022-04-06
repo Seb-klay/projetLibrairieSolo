@@ -5,6 +5,7 @@ import ch.hegarc.ig.json.SerialisationJson;
 import ch.hegarc.ig.xml.MainUnmarshalling;
 import org.apache.commons.cli.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Console {
@@ -24,6 +25,7 @@ public class Console {
 
         Scanner command = new Scanner(System.in);
         System.out.println("Entrer votre commande: ");
+        ArrayList dataJson = null;
 
         boolean running = true;
         while (running) {
@@ -43,7 +45,7 @@ public class Console {
                         if (fileName.substring(fileName.length() - 3).equals("xml"))
                             MainUnmarshalling.run(fileName);
                         else
-                            DeserialisationJson.JsonReader(fileName);
+                            dataJson = DeserialisationJson.JsonReader(fileName);
 
                     } else {
                         printAppHelp();
@@ -58,7 +60,7 @@ public class Console {
                         System.out.println("Export du " + projectName + "dans le fichier " + fileName);
 
                         // TODO Export du fichier JSON
-                        SerialisationJson.JsonWriter(fileName, projectName);
+                        SerialisationJson.JsonWriter(fileName, projectName, dataJson);
 
 
                     } else {
