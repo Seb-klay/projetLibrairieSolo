@@ -22,7 +22,7 @@ public class SerialisationJson {
         try {
 
             ObjectMapper om = new ObjectMapper();
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
             om.setDateFormat(df);
 
             //test avec un nouvel objet
@@ -49,7 +49,11 @@ public class SerialisationJson {
                 dataJson.add(c);
             }
             // Ecriture avec pretty print -> retour à la ligne etc.
-            if (c != null) {
+            if (projectName == null){
+                om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataJson);
+                logger.log(Level.INFO, "Fichier <" + filename + "> créé");
+            }
+            else if (c != null) {
                 om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataJson);
                 logger.log(Level.INFO, "Fichier <" + filename + "> créé");
             } else {

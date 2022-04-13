@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 public class CustomLocalDateDeserializer extends StdDeserializer<LocalDate> {
 
     private static DateTimeFormatter formatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public CustomLocalDateDeserializer() {
         this(null);
@@ -26,6 +26,9 @@ public class CustomLocalDateDeserializer extends StdDeserializer<LocalDate> {
     public LocalDate deserialize(JsonParser jsonparser, DeserializationContext context)
             throws IOException, JsonProcessingException {
         String date = jsonparser.getText();
-        return LocalDate.parse(date, formatter);
+        if (date.equals(""))
+            return null;
+        else
+            return LocalDate.parse(date, formatter);
     }
 }

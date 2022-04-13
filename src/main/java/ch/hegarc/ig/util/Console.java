@@ -1,6 +1,7 @@
 package ch.hegarc.ig.util;
 
 import ch.hegarc.ig.business.Athlete;
+import ch.hegarc.ig.business.Competition;
 import ch.hegarc.ig.json.DeserialisationJson;
 import ch.hegarc.ig.json.SerialisationJson;
 import ch.hegarc.ig.xml.MainUnmarshalling;
@@ -16,9 +17,15 @@ public class Console {
     final private String CMD_EXPORT = "export";
     final private String CMD_STATS = "stats";
     final private String CMD_EXIT = "exit";
+    final private String CMD_ADD = "add";
+    final private String CMD_DELETE = "delete";
 
     final private Option OPT_FICHIER = new Option("f", "fichier", true, "nom du fichier");
     final private Option OPT_COMP = new Option("c", "competiton", true, "nom de la competition");
+    final private Option OPT_NOM = new Option("n", "nom", true, "nom");
+    final private Option OPT_PRENOM = new Option("p", "prenom", true, "prénom");
+    final private Option OPT_ANNEE = new Option("a", "annee", true, "année athlète");
+    final private Option OPT_PRIX = new Option("$", "prix", true, "prix");
 
     /**
      * Démarre la commande
@@ -27,7 +34,7 @@ public class Console {
 
         Scanner command = new Scanner(System.in);
         System.out.println("Entrer votre commande: ");
-        List<Athlete> dataJson = new ArrayList();
+        List<Competition> dataJson = new ArrayList();
         List<Athlete> dataXML = new ArrayList<>();
 
         boolean running = true;
@@ -48,7 +55,7 @@ public class Console {
                         if (fileName.substring(fileName.length() - 3).equals("xml")) {
                             dataXML = MainUnmarshalling.XMLReader(fileName);
                             System.out.println(dataXML);
-                        }else {
+                        } else {
                             dataJson = DeserialisationJson.JsonReader(fileName);
 
                             if (dataJson != null && dataXML != null) {
@@ -71,7 +78,7 @@ public class Console {
                         SerialisationJson.JsonWriter(fileName, projectName, dataJson);
 
 
-                    } else if(cmdLine.hasOption(OPT_FICHIER.getOpt())){
+                    } else if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
                         System.out.println("Export dans le fichier " + fileName);
                         String projectName = null;
@@ -91,6 +98,47 @@ public class Console {
                 case CMD_EXIT:
                     System.out.println("Fermeture!");
                     running = false;
+                    break;
+
+                case CMD_ADD:
+                    if (cmdLine.hasOption(OPT_COMP.getOpt()) && cmdLine.hasOption(OPT_NOM.getOpt())
+                            && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt())
+                            && cmdLine.hasOption(OPT_PRIX.getOpt())) {
+
+                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                        String nom = cmdLine.getOptionValue(OPT_NOM.getOpt());
+                        String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
+                        String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
+                        String prix = cmdLine.getOptionValue(OPT_PRIX.getOpt());
+
+                        System.out.println("Insertion de " + nom + " " + prenom + " annnée "+ annee + " dans la compétition" + projectName + " avec le prix de " + prix + " en cours");
+
+                        // TODO Insertion d'un athlète
+                        //import -f data.json
+                        //add -c Paris -n test -p test -a 2002 -$ 32
+                        dataJson = AthleteHandler.add(dataJson, projectName, nom, prenom, annee, prix);
+                    } else {
+                        printAppHelp();
+                    }
+                    break;
+
+                case CMD_DELETE:
+                    if (cmdLine.hasOption(OPT_COMP.getOpt()) && cmdLine.hasOption(OPT_NOM.getOpt())
+                            && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt())) {
+
+                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                        String nom = cmdLine.getOptionValue(OPT_NOM.getOpt());
+                        String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
+                        String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
+
+                        System.out.println("Insertion de " + nom + " " + prenom + " annnée "+ annee + " dans la compétition" + projectName + " en cours");
+
+                        // TODO Insertion d'un athlète
+                        //delete -c Paris -n test -p test -a 2002
+                        dataJson = AthleteHandler.delete(dataJson, projectName, nom, prenom, annee);
+                    } else {
+                        printAppHelp();
+                    }
                     break;
 
                 default:
@@ -135,7 +183,7 @@ public class Console {
     private Options getAllOptions() {
 
         Options options = new Options();
-        options.addOption(OPT_FICHIER).addOption(OPT_COMP);
+        options.addOption(OPT_FICHIER).addOption(OPT_COMP).addOption(OPT_NOM).addOption(OPT_PRENOM).addOption(OPT_ANNEE).addOption(OPT_PRIX);
         return options;
     }
 
@@ -148,5 +196,7 @@ public class Console {
         formatter.printHelp(CMD_EXPORT, new Options().addOption(OPT_FICHIER).addOption(OPT_COMP), true);
         formatter.printHelp(CMD_STATS, new Options().addOption(OPT_COMP), true);
         formatter.printHelp(CMD_EXIT, new Options());
+        formatter.printHelp(CMD_ADD, new Options().addOption(OPT_COMP).addOption(OPT_NOM).addOption(OPT_PRENOM).addOption(OPT_ANNEE).addOption(OPT_PRIX), true);
+        formatter.printHelp(CMD_DELETE, new Options().addOption(OPT_COMP).addOption(OPT_NOM).addOption(OPT_PRENOM).addOption(OPT_ANNEE), true);
     }
 }

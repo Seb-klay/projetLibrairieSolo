@@ -24,7 +24,7 @@ public class DeserialisationJson {
 
             // ObjectMapper - Ignorer les propriétés inconnues
             ObjectMapper om = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
             om.setDateFormat(df);
             listCompetition = om.readValue(new File(filename), new TypeReference<List<Competition>>() {});
 
