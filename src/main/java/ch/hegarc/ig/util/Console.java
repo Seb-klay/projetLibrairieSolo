@@ -47,8 +47,8 @@ public class Console {
                             MainUnmarshalling.run(fileName);
                         else
                             dataJson = DeserialisationJson.JsonReader(fileName);
-                        if (!dataJson.equals(null) && !dataXML.equals(null)){
-
+                        if (dataJson != null && dataXML != null){
+                            System.out.println("test");
                         }
                     } else {
                         printAppHelp();

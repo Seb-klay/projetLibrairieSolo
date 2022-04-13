@@ -39,9 +39,12 @@ public class SerialisationJson {
 
             // Ecriture avec pretty print -> retour à la ligne etc.
             om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), competitions);*/
-            Competition c = (Competition) dataJson.get(0);
-            c.setName(projectName);
-            dataJson.set(0, c);
+            Competition c = ((ArrayList<Competition>) dataJson).stream()
+                    .filter(competition -> projectName.equals(competition.getName()))
+                    .findAny()
+                    .orElse(null);
+            dataJson = new ArrayList();
+            dataJson.add(c);
             // Ecriture avec pretty print -> retour à la ligne etc.
             om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataJson);
             
