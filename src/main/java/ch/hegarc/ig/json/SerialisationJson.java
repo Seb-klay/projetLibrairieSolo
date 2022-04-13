@@ -39,16 +39,24 @@ public class SerialisationJson {
 
             // Ecriture avec pretty print -> retour à la ligne etc.
             om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), competitions);*/
-            Competition c = ((ArrayList<Competition>) dataJson).stream()
-                    .filter(competition -> projectName.equals(competition.getName()))
-                    .findAny()
-                    .orElse(null);
-            dataJson = new ArrayList();
-            dataJson.add(c);
+            Competition c = null;
+            if (projectName != null) {
+                c = ((ArrayList<Competition>) dataJson).stream()
+                        .filter(competition -> projectName.equals(competition.getName()))
+                        .findAny()
+                        .orElse(null);
+                dataJson = new ArrayList();
+                dataJson.add(c);
+            }
             // Ecriture avec pretty print -> retour à la ligne etc.
-            om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataJson);
-            
-            logger.log(Level.INFO, "Fichier <"+ filename +"> créé");
+            if (c != null) {
+                om.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataJson);
+                logger.log(Level.INFO, "Fichier <" + filename + "> créé");
+            } else {
+                System.out.println("Aucune compétition trouvé à ce nom");
+            }
+
+
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
         }

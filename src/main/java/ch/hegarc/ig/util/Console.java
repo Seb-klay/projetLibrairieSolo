@@ -60,12 +60,18 @@ public class Console {
 
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
                         String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        System.out.println("Export du " + projectName + "dans le fichier " + fileName);
+                        System.out.println("Export du " + projectName + " dans le fichier " + fileName);
 
                         // TODO Export du fichier JSON
                         SerialisationJson.JsonWriter(fileName, projectName, dataJson);
 
 
+                    } else if(cmdLine.hasOption(OPT_FICHIER.getOpt())){
+                        String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
+                        System.out.println("Export dans le fichier " + fileName);
+                        String projectName = null;
+                        // TODO Export du fichier JSON
+                        SerialisationJson.JsonWriter(fileName, projectName, dataJson);
                     } else {
                         printAppHelp();
                     }
