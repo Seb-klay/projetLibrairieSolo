@@ -1,5 +1,6 @@
 package ch.hegarc.ig.json;
 
+import ch.hegarc.ig.business.Athlete;
 import ch.hegarc.ig.business.Competition;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DeserialisationJson {
+    private static ArrayList listCompetition;
 
     private static final Logger logger = Logger.getLogger(DeserialisationJson.class.getName());
     
@@ -24,7 +26,7 @@ public class DeserialisationJson {
             ObjectMapper om = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             om.setDateFormat(df);
-            ArrayList listCompetition = om.readValue(new File(filename), new TypeReference<List<Competition>>() {});
+            listCompetition = om.readValue(new File(filename), new TypeReference<List<Competition>>() {});
 
             for (Competition c: (ArrayList<Competition>) listCompetition) {
                 logger.log(Level.INFO, c.toString());
