@@ -30,6 +30,16 @@ public class Athlete {
         this.annee = annee;
     }
 
+    public Athlete(long id, String prenom, String nom, int annee, String email, String ville, Long prixInscription) {
+        this.id = id;
+        this.prNom = prenom;
+        this.nom = nom;
+        this.email = email;
+        this.ville = ville;
+        this.somme = prixInscription;
+        this.annee = annee;
+    }
+
     public long getId() {
         return id;
     }

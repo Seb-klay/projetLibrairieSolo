@@ -26,6 +26,7 @@ public class Console {
         Scanner command = new Scanner(System.in);
         System.out.println("Entrer votre commande: ");
         ArrayList dataJson = null;
+        ArrayList dataXML = null;
 
         boolean running = true;
         while (running) {
@@ -46,7 +47,9 @@ public class Console {
                             MainUnmarshalling.run(fileName);
                         else
                             dataJson = DeserialisationJson.JsonReader(fileName);
+                        if (!dataJson.equals(null) && !dataXML.equals(null)){
 
+                        }
                     } else {
                         printAppHelp();
                     }

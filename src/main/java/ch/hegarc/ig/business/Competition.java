@@ -15,14 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-        "athletes"
-})
-@XmlRootElement(name = "record")
 public class Competition {
-    @XmlElement(name = "athlete", required = true)
-
     private long id;
 
     @JsonProperty("competition")
