@@ -1,11 +1,13 @@
 package ch.hegarc.ig.util;
 
+import ch.hegarc.ig.business.Athlete;
 import ch.hegarc.ig.json.DeserialisationJson;
 import ch.hegarc.ig.json.SerialisationJson;
 import ch.hegarc.ig.xml.MainUnmarshalling;
 import org.apache.commons.cli.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Console {
@@ -25,8 +27,8 @@ public class Console {
 
         Scanner command = new Scanner(System.in);
         System.out.println("Entrer votre commande: ");
-        ArrayList dataJson = null;
-        ArrayList dataXML = null;
+        List<Athlete> dataJson = new ArrayList();
+        List<Athlete> dataXML = new ArrayList<>();
 
         boolean running = true;
         while (running) {
@@ -43,12 +45,15 @@ public class Console {
                         System.out.println("Import du fichier " + fileName);
 
                         // TODO Import du fichier XML ou JSON
-                        if (fileName.substring(fileName.length() - 3).equals("xml"))
-                            MainUnmarshalling.run(fileName);
-                        else
+                        if (fileName.substring(fileName.length() - 3).equals("xml")) {
+                            dataXML = MainUnmarshalling.XMLReader(fileName);
+                            System.out.println(dataXML);
+                        }else {
                             dataJson = DeserialisationJson.JsonReader(fileName);
-                        if (dataJson != null && dataXML != null){
-                            System.out.println("test");
+
+                            if (dataJson != null && dataXML != null) {
+
+                            }
                         }
                     } else {
                         printAppHelp();
