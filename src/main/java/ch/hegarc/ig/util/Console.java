@@ -9,6 +9,7 @@ import org.apache.commons.cli.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Console {
@@ -116,7 +117,10 @@ public class Console {
                         // TODO Insertion d'un athlète
                         //import -f data.json
                         //add -c Paris -n test -p test -a 2002 -$ 32
-                        dataJson = AthleteHandler.add(dataJson, projectName, nom, prenom, annee, prix);
+
+                        List<Competition> dataWithAddedAthlete = AthleteHandler.add(dataJson, projectName, nom, prenom, annee, prix);
+                        dataJson = Objects.isNull(dataWithAddedAthlete) ? dataJson : dataWithAddedAthlete ;
+
                     } else {
                         printAppHelp();
                     }
@@ -133,9 +137,10 @@ public class Console {
 
                         System.out.println("Insertion de " + nom + " " + prenom + " annnée "+ annee + " dans la compétition" + projectName + " en cours");
 
-                        // TODO Insertion d'un athlète
+                        // TODO Suppression d'un athlète
                         //delete -c Paris -n test -p test -a 2002
-                        dataJson = AthleteHandler.delete(dataJson, projectName, nom, prenom, annee);
+                        List<Competition> dataWithDeletedAthlete = AthleteHandler.delete(dataJson, projectName, nom, prenom, annee);
+                        dataJson = Objects.isNull(dataWithDeletedAthlete) ? dataJson : dataWithDeletedAthlete ;
                     } else {
                         printAppHelp();
                     }

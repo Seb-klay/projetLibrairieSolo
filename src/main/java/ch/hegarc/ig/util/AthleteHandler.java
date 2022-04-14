@@ -26,7 +26,18 @@ public class AthleteHandler {
             Competition c = Competitions.get(index);
             long id = c.getAthletes().stream().map(u -> u.getId()).max(Comparator.naturalOrder()).get() + 1;
             ArrayList<Athlete> athletes = (ArrayList<Athlete>) Competitions.get(index).getAthletes();
-            athletes.add(new Athlete(id, prenom, nom, null, null, null, null, null, Long.valueOf(prix), false, false, Integer.valueOf(annee), LocalDate.now(), null));
+
+            int readAnnee = -1;
+            long readPrix = -1;
+
+            try {
+                readAnnee = Integer.valueOf(annee);
+                readPrix = Long.valueOf(prix);
+            } catch (Exception e) {
+                System.out.println("L'année ou le prix n'est pas un nombre");
+                return null;
+            }
+            athletes.add(new Athlete(id, prenom, nom, null, null, null, null, null, readPrix, false, false, readAnnee, LocalDate.now(), null));
             c.setAthletes(athletes);
             Competitions.set(index, c);
             System.out.println("élément " + prenom + " " + nom + " " + annee + " de prix" + prix +" de la compétition " + projectName + " à été ajouté");
@@ -44,12 +55,20 @@ public class AthleteHandler {
         Competition c = Competitions.get(index);
         List<Athlete> athletes = c.getAthletes();
 
-        if (athletes.removeIf(a -> a.getNom().equals(nom) && a.getPrNom().equals(prenom) && a.getAnnee() == Integer.parseInt(annee))) {
-            Competitions.set(index, c);
-            System.out.println("élément " + prenom + " " + nom + " " + annee + " de la compétition " + projectName + " à été supprimé");
-            return Competitions;
-        }
-        else
+        try {
+            int readAnnee = Integer.parseInt(annee);
+            if (athletes.removeIf(a -> a.getNom().equals(nom) && a.getPrNom().equals(prenom) && a.getAnnee() == readAnnee)) {
+                Competitions.set(index, c);
+                System.out.println("élément " + prenom + " " + nom + " " + annee + " de la compétition " + projectName + " à été supprimé");
+                return Competitions;
+            }
+            else
+                return null;
+        } catch (Exception e) {
+            System.out.println("L'année n'est pas un nombre");
             return null;
+        }
+
+
     }
 }
