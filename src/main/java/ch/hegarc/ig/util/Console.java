@@ -35,8 +35,8 @@ public class Console {
 
         Scanner command = new Scanner(System.in);
         System.out.println("Entrer votre commande: ");
-        List<Competition> dataJson = new ArrayList();
-        List<Athlete> dataXML = new ArrayList<>();
+        List<Competition> dataJson = new ArrayList<>();
+        List<Competition> dataXML = new ArrayList<>();
 
         boolean running = true;
         while (running) {

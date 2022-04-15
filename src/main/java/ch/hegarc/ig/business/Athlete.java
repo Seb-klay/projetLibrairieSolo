@@ -37,7 +37,7 @@ public class Athlete {
     }
 
     public Athlete(long id, String prNom, String nom, String email, String langue, String adresse, String ville, String monnaie, long somme, boolean pay, boolean annul,  int annee, LocalDate dateInscription, LocalDate dateVersement) {
-        super();
+        super(); //sert à quelque chose ?
         this.id = id;
         this.prNom = prNom;
         this.nom = nom;
@@ -49,59 +49,6 @@ public class Athlete {
         this.annul = annul;
         this.dateInscription = dateInscription;
         this.dateVersement = dateVersement;
-    }
-
-    public boolean isPay() {
-        return pay;
-    }
-
-    public void setPay(boolean pay) {
-        this.pay = pay;
-    }
-
-    public boolean isAnnul() {
-        return annul;
-    }
-
-    public void setAnnul(boolean annul) {
-        this.annul = annul;
-    }
-
-    public LocalDate getDateVersement() {
-        return dateVersement;
-    }
-
-    public void setDateVersement(LocalDate dateVersement) {
-        this.dateVersement = dateVersement;
-    }
-
-    public Athlete(long id, String prNom, String nom, String email, String langue, String adresse, String ville, String monnaie, long somme, boolean pay, boolean annul, String dateDon, String dateVersement, int annee) {
-        super();
-        this.id = id;
-        this.prNom = prNom;
-        this.nom = nom;
-        this.email = email;
-        this.ville = ville;
-        this.somme = somme;
-        this.annee = annee;
-    }
-
-    public Athlete(long id, String prenom, String nom, int annee, String email, String ville, Long prixInscription) {
-        this.id = id;
-        this.prNom = prenom;
-        this.nom = nom;
-        this.email = email;
-        this.ville = ville;
-        this.somme = prixInscription;
-        this.annee = annee;
-    }
-
-    public LocalDate getDateInscription() {
-        return dateInscription;
-    }
-
-    public void setDateInscription(LocalDate dateInscription) {
-        this.dateInscription = dateInscription;
     }
 
     public long getId() {
@@ -158,6 +105,38 @@ public class Athlete {
 
     public void setAnnee(int annee) {
         this.annee = annee;
+    }
+
+    public boolean isPay() {
+        return pay;
+    }
+
+    public void setPay(boolean pay) {
+        this.pay = pay;
+    }
+
+    public boolean isAnnul() {
+        return annul;
+    }
+
+    public void setAnnul(boolean annul) {
+        this.annul = annul;
+    }
+
+    public LocalDate getDateVersement() {
+        return dateVersement;
+    }
+
+    public void setDateVersement(LocalDate dateVersement) {
+        this.dateVersement = dateVersement;
+    }
+
+    public LocalDate getDateInscription() {
+        return dateInscription;
+    }
+
+    public void setDateInscription(LocalDate dateInscription) {
+        this.dateInscription = dateInscription;
     }
 
     @Override

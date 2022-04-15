@@ -1,6 +1,7 @@
 package ch.hegarc.ig.xml;
 
 import ch.hegarc.ig.business.Athlete;
+import ch.hegarc.ig.business.Competition;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -15,8 +16,8 @@ public class MainUnmarshalling {
     private MainUnmarshalling() {
     }
 
-    public static List<Athlete> XMLReader(String filename) {
-        List<Athlete> competitionList = new ArrayList<>();
+    public static List<Competition> XMLReader(String filename) {
+        List<Competition> competitionList = new ArrayList<>();
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(true);
 
@@ -25,7 +26,7 @@ public class MainUnmarshalling {
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(new File(filename), handler);
 
-            competitionList = handler.getAthleteList().getAthletes();
+            competitionList = handler.getAthleteList();
 
         } catch (ParserConfigurationException | IOException | org.xml.sax.SAXException ex) {
             System.err.println(ex);

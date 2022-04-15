@@ -24,7 +24,7 @@ public class Competition {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = CustomLocalDateSerializer.class)
     private LocalDate date;
-    private List<Athlete> athletes = new ArrayList<Athlete>();
+    private List<Athlete> athletes = new ArrayList<>();
 
     public Competition() {
     }

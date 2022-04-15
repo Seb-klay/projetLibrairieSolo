@@ -15,11 +15,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DeserialisationJson {
-    private static ArrayList listCompetition;
+    private static List<Competition> listCompetition = new ArrayList<>();
 
     private static final Logger logger = Logger.getLogger(DeserialisationJson.class.getName());
     
-    public static ArrayList JsonReader(String filename) {
+    public static List<Competition> JsonReader(String filename) {
         try {
 
             // ObjectMapper - Ignorer les propriétés inconnues

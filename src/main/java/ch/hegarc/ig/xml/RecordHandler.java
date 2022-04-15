@@ -1,27 +1,26 @@
 package ch.hegarc.ig.xml;
 
 import ch.hegarc.ig.business.Athlete;
-import ch.hegarc.ig.business.AthleteList;
 import ch.hegarc.ig.business.Competition;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecordHandler extends DefaultHandler {
     private Competition competition;
-    private AthleteList athleteList;
+    private final List<Competition> competitionList = new ArrayList<>();
     private Athlete athlete;
     private StringBuffer texte;
     private boolean isAthlete = false ;
 
-    //Le doc fonctionne UNIQUEMENT si le "id" et "competition" dans le document dataset.xml sont retirés...
-
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        if (localName.equals("dataset")) {
-            athleteList = new AthleteList();
-        }
         if (localName.equals("record")) {
             competition = new Competition();
+            competitionList.add(competition);
         }
         if (localName.equals("athletes")) {
             athlete = new Athlete();
@@ -45,11 +44,11 @@ public class RecordHandler extends DefaultHandler {
             competition.setName(texte.toString());
         }
         if (localName.equals("athletes")) {
-            athleteList.getAthletes().add(athlete);
+            competition.getAthletes().add(athlete);
             isAthlete = false;
         }
         if (localName.equals("genre")) {
-
+            //rien
         }
         if (localName.equals("prenom")) {
             athlete.setPrNom(texte.toString());
@@ -66,23 +65,23 @@ public class RecordHandler extends DefaultHandler {
         if (localName.equals("pays")) {
 
         }
-        /*if (localName.equals("ville")) {
+        if (localName.equals("ville")) {
             athlete.setVille(texte.toString());
-        }*/
+        }
         if (localName.equals("prixInscription")) {
             athlete.setSomme(Long.parseLong(texte.toString()));
         }
         if (localName.equals("paye")) {
-
+            athlete.setPay(Boolean.parseBoolean(texte.toString()));
         }
         if (localName.equals("annule")) {
-
+            athlete.setAnnul(Boolean.parseBoolean(texte.toString()));
         }
         if (localName.equals("dateInscription")) {
-
+            //athlete.setDateInscription(LocalDate.parse(texte.toString()));
         }
         if (localName.equals("dateVersement")) {
-
+            //athlete.setDateVersement(LocalDate.parse(texte.toString()));
         }
     }
 
@@ -93,8 +92,8 @@ public class RecordHandler extends DefaultHandler {
         }
     }
 
-    public AthleteList getAthleteList() {
-        return athleteList;
+    public List<Competition> getAthleteList() {
+        return competitionList;
     }
 
 }
