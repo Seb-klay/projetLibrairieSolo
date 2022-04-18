@@ -48,7 +48,6 @@ public class Console {
 
                 case CMD_IMPORT:
                     if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
-
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
                         System.out.println("Import du fichier " + fileName);
 
@@ -58,10 +57,10 @@ public class Console {
                             AthleteHandler.sortList(dataXML);
                         } else {
                             dataJson = DeserialisationJson.JsonReader(fileName);
+                        }
 
-                            if (dataJson != null && dataXML != null) {
-
-                            }
+                        if (dataJson != null && dataXML != null) {
+                            AthleteHandler.fusionLists(dataJson, dataXML);
                         }
                     } else {
                         printAppHelp();

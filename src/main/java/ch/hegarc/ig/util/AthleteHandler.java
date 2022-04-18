@@ -10,24 +10,22 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class AthleteHandler {
-    public static List<Competition> fusionLists(List<Competition> competition1, List<Competition> competition2){
-        List<Competition> competitions = new ArrayList<>(competition1);
+    public static HashSet<Competition> fusionLists(List<Competition> competition1, List<Competition> competition2){
+        HashSet<Competition> competitions = new HashSet<>(competition1);
         System.out.println("Début de la fusion : ");
         competitions.addAll(competition2);
-        System.out.println(competitions);
         return competitions;
     }
 
     public static List<Competition> sortList(List<Competition> competitions){
         System.out.println("Début du tri : ");
-        //Sort uniquement la liste d'athlètes
+        //Tri uniquement la liste d'athlètes
         /*for (Competition compets : competitions) {
             Collections.sort(compets.getAthletes());
         }*/
 
-        //Sort uniquement la liste de compétitions
+        //Tri uniquement la liste de compétitions
         Collections.sort(competitions);
-        System.out.println(competitions);
         return competitions;
     }
 
