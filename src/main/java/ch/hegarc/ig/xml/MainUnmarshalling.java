@@ -1,6 +1,5 @@
 package ch.hegarc.ig.xml;
 
-import ch.hegarc.ig.business.Athlete;
 import ch.hegarc.ig.business.Competition;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,7 +25,7 @@ public class MainUnmarshalling {
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(new File(filename), handler);
 
-            competitionList = handler.getAthleteList();
+            competitionList = handler.getCompetitionsList();
 
         } catch (ParserConfigurationException | IOException | org.xml.sax.SAXException ex) {
             System.err.println(ex);

@@ -7,8 +7,30 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class AthleteHandler {
+    public static List<Competition> fusionLists(List<Competition> competition1, List<Competition> competition2){
+        List<Competition> competitions = new ArrayList<>(competition1);
+        System.out.println("Début de la fusion : ");
+        competitions.addAll(competition2);
+        System.out.println(competitions);
+        return competitions;
+    }
+
+    public static List<Competition> sortList(List<Competition> competitions){
+        System.out.println("Début du tri : ");
+        //Sort uniquement la liste d'athlètes
+        /*for (Competition compets : competitions) {
+            Collections.sort(compets.getAthletes());
+        }*/
+
+        //Sort uniquement la liste de compétitions
+        Collections.sort(competitions);
+        System.out.println(competitions);
+        return competitions;
+    }
+
     public static List<Competition> add(List<Competition> Competitions, String projectName, String nom, String prenom, String annee, String prix) {
         if (Competitions == null) {
             System.out.println("Aucune compétitions enregistrées");

@@ -10,9 +10,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Athlete {
+public class Athlete implements Comparable<Athlete> {
 
     private long id;
     @JsonProperty("prenom")
@@ -33,6 +35,7 @@ public class Athlete {
     @JsonDeserialize(using = CustomLocalDateDeserializer.class)
     @JsonSerialize(using = CustomLocalDateSerializer.class)
     private LocalDate dateVersement;
+
     public Athlete() {
     }
 
@@ -157,5 +160,31 @@ public class Athlete {
         if (dateVersement != null)
             strBuilder.append("dateVersement= " + dateVersement + "\n");
         return strBuilder.toString();
+    }
+
+    @Override
+    public int compareTo(Athlete o) {
+        int compare = this.prNom.compareTo(o.getPrNom());
+
+        if(compare == 0){
+            return this.nom.compareTo(o.getNom());
+        }
+        return compare;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        /*if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Athlete athlete = (Athlete) o;
+        return annee == athlete.annee && Objects.equals(prNom, athlete.prNom) && Objects.equals(nom, athlete.nom);*/
+
+        Athlete athlete = (Athlete) o ;
+        return this.prNom.equals(athlete.getPrNom()) && this.nom.equals(athlete.getNom()); // && this.annee.equals(athlete.annee);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(prNom, nom, annee);
     }
 }

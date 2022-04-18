@@ -55,7 +55,7 @@ public class Console {
                         // TODO Import du fichier XML ou JSON
                         if (fileName.substring(fileName.length() - 3).equals("xml")) {
                             dataXML = MainUnmarshalling.XMLReader(fileName);
-                            System.out.println(dataXML);
+                            AthleteHandler.sortList(dataXML);
                         } else {
                             dataJson = DeserialisationJson.JsonReader(fileName);
 

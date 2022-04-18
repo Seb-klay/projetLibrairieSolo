@@ -5,7 +5,6 @@ import ch.hegarc.ig.business.Competition;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +44,7 @@ public class RecordHandler extends DefaultHandler {
         }
         if (localName.equals("athletes")) {
             competition.getAthletes().add(athlete);
+            //competition.getSortedAthletes().add(athlete);
             isAthlete = false;
         }
         if (localName.equals("genre")) {
@@ -92,7 +92,7 @@ public class RecordHandler extends DefaultHandler {
         }
     }
 
-    public List<Competition> getAthleteList() {
+    public List<Competition> getCompetitionsList() {
         return competitionList;
     }
 

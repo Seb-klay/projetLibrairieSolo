@@ -13,11 +13,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-public class Competition {
+public class Competition implements Comparable<Competition>{
     private long id;
-
     @JsonProperty("competition")
     private String name;
     @JsonDeserialize(using = CustomLocalDateDeserializer.class)
@@ -82,7 +83,31 @@ public class Competition {
         strBuilder.append("id=" + id + "\n");
         strBuilder.append("name=" + name + "\n");
         strBuilder.append("date=" + date + "\n");
-        strBuilder.append("athletes=' {" + athletes+ "}\n");
+        strBuilder.append("athletes=' {" + athletes + "}\n");
         return strBuilder.toString();
+    }
+
+    @Override
+    public int compareTo(Competition o) {
+        int compare = this.name.compareTo(o.getName());
+
+        if(compare == 0){
+            Collections.sort(athletes); //Ne fonctionne pas
+            return this.name.compareTo(o.getName());
+        }
+        return compare;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Competition that = (Competition) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
