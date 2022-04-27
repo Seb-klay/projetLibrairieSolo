@@ -80,10 +80,18 @@ public class Competition implements Comparable<Competition>{
     public String toString() {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("Competition : \n");
-        strBuilder.append("id=" + id + "\n");
-        strBuilder.append("name=" + name + "\n");
-        strBuilder.append("date=" + date + "\n");
-        strBuilder.append("athletes=' {" + athletes + "}\n");
+        strBuilder.append("id= ");
+        strBuilder.append(id);
+        strBuilder.append("\n");
+        strBuilder.append("name= ");
+        strBuilder.append(name);
+        strBuilder.append("\n");
+        strBuilder.append("date= ");
+        strBuilder.append(date);
+        strBuilder.append("\n");
+        strBuilder.append("athletes=' { ");
+        strBuilder.append(athletes);
+        strBuilder.append("}\n");
         return strBuilder.toString();
     }
 

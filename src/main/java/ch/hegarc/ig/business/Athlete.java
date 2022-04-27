@@ -39,7 +39,7 @@ public class Athlete implements Comparable<Athlete> {
     public Athlete() {
     }
 
-    public Athlete(long id, String prNom, String nom, String email, String langue, String adresse, String ville, String monnaie, long somme, boolean pay, boolean annul,  int annee, LocalDate dateInscription, LocalDate dateVersement) {
+    public Athlete(long id, String prNom, String nom, String email, String langue, String adresse, String ville, String monnaie, long somme, boolean pay, boolean annul, int annee, LocalDate dateInscription, LocalDate dateVersement) {
         super(); //sert à quelque chose ?
         this.id = id;
         this.prNom = prNom;
@@ -146,19 +146,43 @@ public class Athlete implements Comparable<Athlete> {
     public String toString() {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("Athlete : \n");
-        strBuilder.append("id= " + id + "\n");
-        strBuilder.append("prénom= " + prNom + "\n");
-        strBuilder.append("nom= " + nom + "\n");
-        strBuilder.append("email= " + email + "\n");
-        strBuilder.append("ville= " + ville + "\n");
-        strBuilder.append("annee= " + annee + "\n");
-        strBuilder.append("somme= " + somme + "\n");
-        strBuilder.append("pay= " + pay + "\n");
-        strBuilder.append("annul= " + annul + "\n");
-        if (dateInscription != null)
-            strBuilder.append("dateInscription= " + dateInscription + "\n");
-        if (dateVersement != null)
-            strBuilder.append("dateVersement= " + dateVersement + "\n");
+        strBuilder.append("id= ");
+        strBuilder.append(id);
+        strBuilder.append("\n");
+        strBuilder.append("prénom= ");
+        strBuilder.append(prNom);
+        strBuilder.append("\n");
+        strBuilder.append("nom= ");
+        strBuilder.append(nom);
+        strBuilder.append("\n");
+        strBuilder.append("email= ");
+        strBuilder.append(email);
+        strBuilder.append("\n");
+        strBuilder.append("ville= ");
+        strBuilder.append(ville);
+        strBuilder.append("\n");
+        strBuilder.append("annee= ");
+        strBuilder.append(annee);
+        strBuilder.append("\n");
+        strBuilder.append("somme= ");
+        strBuilder.append(somme);
+        strBuilder.append("\n");
+        strBuilder.append("pay= ");
+        strBuilder.append(pay);
+        strBuilder.append("\n");
+        strBuilder.append("annul= ");
+        strBuilder.append(annul);
+        strBuilder.append("\n");
+        if (dateInscription != null) {
+            strBuilder.append("dateInscription= ");
+            strBuilder.append(dateInscription);
+            strBuilder.append("\n");
+        }
+        if (dateVersement != null) {
+            strBuilder.append("dateVersement= ");
+            strBuilder.append(dateVersement);
+            strBuilder.append("\n");
+        }
         return strBuilder.toString();
     }
 
@@ -166,7 +190,7 @@ public class Athlete implements Comparable<Athlete> {
     public int compareTo(Athlete o) {
         int compare = this.prNom.compareTo(o.getPrNom());
 
-        if(compare == 0){
+        if (compare == 0) {
             return this.nom.compareTo(o.getNom());
         }
         return compare;
@@ -179,7 +203,7 @@ public class Athlete implements Comparable<Athlete> {
         Athlete athlete = (Athlete) o;
         return annee == athlete.annee && Objects.equals(prNom, athlete.prNom) && Objects.equals(nom, athlete.nom);*/
 
-        Athlete athlete = (Athlete) o ;
+        Athlete athlete = (Athlete) o;
         return this.prNom.equals(athlete.getPrNom()) && this.nom.equals(athlete.getNom()); // && this.annee.equals(athlete.annee);
     }
 

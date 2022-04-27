@@ -39,7 +39,10 @@ public class AthleteHandler {
                 .findFirst()
                 .orElse(-1);
         if (index == -1){
-            System.out.println("Aucune compétitions trouvé à au nom de " + projectName);
+            StringBuilder sb = new StringBuilder();
+            sb.append("Aucune compétitions trouvé à au nom de ");
+            sb.append(projectName);
+            System.out.println(sb);
             return null;
         }
         else {
@@ -60,7 +63,19 @@ public class AthleteHandler {
             athletes.add(new Athlete(id, prenom, nom, null, null, null, null, null, readPrix, false, false, readAnnee, LocalDate.now(), null));
             c.setAthletes(athletes);
             Competitions.set(index, c);
-            System.out.println("élément " + prenom + " " + nom + " " + annee + " de prix" + prix +" de la compétition " + projectName + " à été ajouté");
+            StringBuilder sbAthlete = new StringBuilder();
+            sbAthlete.append("L'athlète ");
+            sbAthlete.append(prenom);
+            sbAthlete.append(" ");
+            sbAthlete.append(nom);
+            sbAthlete.append(" ");
+            sbAthlete.append(annee);
+            sbAthlete.append( " de prix " );
+            sbAthlete.append(prix);
+            sbAthlete.append(" de la compétition ");
+            sbAthlete.append(projectName);
+            sbAthlete.append(" à été ajouté");
+            System.out.println(sbAthlete);
             return Competitions;
         }
     }
@@ -79,7 +94,17 @@ public class AthleteHandler {
             int readAnnee = Integer.parseInt(annee);
             if (athletes.removeIf(a -> a.getNom().equals(nom) && a.getPrNom().equals(prenom) && a.getAnnee() == readAnnee)) {
                 Competitions.set(index, c);
-                System.out.println("élément " + prenom + " " + nom + " " + annee + " de la compétition " + projectName + " à été supprimé");
+                StringBuilder sbAthlete = new StringBuilder();
+                sbAthlete.append("L'athlète ");
+                sbAthlete.append(prenom);
+                sbAthlete.append(" ");
+                sbAthlete.append(nom);
+                sbAthlete.append(" ");
+                sbAthlete.append(annee);
+                sbAthlete.append(" de la compétition ");
+                sbAthlete.append(projectName);
+                sbAthlete.append(" à été supprimé");
+                System.out.println(sbAthlete);
                 return Competitions;
             }
             else
