@@ -7,10 +7,7 @@ import ch.hegarc.ig.json.SerialisationJson;
 import ch.hegarc.ig.xml.MainUnmarshalling;
 import org.apache.commons.cli.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Console {
 
@@ -37,6 +34,8 @@ public class Console {
         System.out.println("Entrer votre commande: ");
         List<Competition> dataJson = new ArrayList<>();
         List<Competition> dataXML = new ArrayList<>();
+        List<Competition> sortedCompetitions = new ArrayList<>();
+        Set<Competition> fusionnedCompetitions = new HashSet<>();
 
         boolean running = true;
         while (running) {
@@ -54,13 +53,13 @@ public class Console {
                         // TODO Import du fichier XML ou JSON
                         if (fileName.substring(fileName.length() - 3).equals("xml")) {
                             dataXML = MainUnmarshalling.XMLReader(fileName);
-                            AthleteHandler.sortList(dataXML);
                         } else {
                             dataJson = DeserialisationJson.JsonReader(fileName);
                         }
 
                         if (dataJson != null && dataXML != null) {
-                            AthleteHandler.fusionLists(dataJson, dataXML);
+                            sortedCompetitions = AthleteHandler.sortList(dataXML);
+                            fusionnedCompetitions = AthleteHandler.fusionLists(dataJson, dataXML);
                         }
                     } else {
                         printAppHelp();

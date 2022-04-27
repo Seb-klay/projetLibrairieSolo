@@ -18,15 +18,14 @@ public class AthleteHandler {
     }
 
     public static List<Competition> sortList(List<Competition> competitions){
-        System.out.println("Début du tri : ");
-        //Tri uniquement la liste d'athlètes
-        /*for (Competition compets : competitions) {
-            Collections.sort(compets.getAthletes());
-        }*/
+        List<Competition> compets = competitions;
 
-        //Tri uniquement la liste de compétitions
-        Collections.sort(competitions);
-        return competitions;
+        System.out.println("Début du tri : ");
+        for (Competition competition : compets) {
+            Collections.sort(competition.getAthletes());
+        }
+        Collections.sort(compets);
+        return compets;
     }
 
     public static List<Competition> add(List<Competition> Competitions, String projectName, String nom, String prenom, String annee, String prix) {
