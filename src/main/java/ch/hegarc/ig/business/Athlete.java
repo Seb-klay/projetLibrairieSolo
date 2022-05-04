@@ -198,13 +198,8 @@ public class Athlete implements Comparable<Athlete> {
 
     @Override
     public boolean equals(Object o) {
-        /*if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
         Athlete athlete = (Athlete) o;
-        return annee == athlete.annee && Objects.equals(prNom, athlete.prNom) && Objects.equals(nom, athlete.nom);*/
-
-        Athlete athlete = (Athlete) o;
-        return this.prNom.equals(athlete.getPrNom()) && this.nom.equals(athlete.getNom()); // && this.annee.equals(athlete.annee);
+        return this.prNom.equals(athlete.getPrNom()) && this.nom.equals(athlete.getNom()) && (this.annee == athlete.getAnnee());
     }
 
     @Override

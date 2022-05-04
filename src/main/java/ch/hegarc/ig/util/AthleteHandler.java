@@ -6,6 +6,7 @@ import ch.hegarc.ig.business.Competition;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -112,7 +113,28 @@ public class AthleteHandler {
             System.out.println("L'année n'est pas un nombre");
             return null;
         }
+    }
+    public static void biggestDonator(List<Competition> competitions, String nameCompetition) {
+        Integer index = IntStream.range(0, competitions.size())
+                .filter(competition -> nameCompetition.equals(competitions.get(competition).getName()))
+                .findFirst()
+                .orElse(-1);
+        if (index == -1)
+            System.out.println("Pas de compétition trouvée à ce nom");
+        else {
+            StringBuilder sb = new StringBuilder();
+            Competition c = competitions.get(index);
+            List<Athlete> athletes = sortBiggestDonator(c.getAthletes());
+            for (Athlete athlete : athletes) {
+                sb.append(athlete.getPrNom()).append(" ").append(athlete.getNom()).append(" ").append(athlete.getSomme());
+                System.out.println(sb);
+            }
+        }
+    }
 
-
+    public static List<Athlete> sortBiggestDonator(List<Athlete> athletes) {
+        Stream<Athlete> stream = athletes.stream();
+        return stream.sorted(Comparator.comparing(Athlete::getSomme).reversed())
+                .limit(5).collect(Collectors.toList());
     }
 }

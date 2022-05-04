@@ -7,6 +7,7 @@ import ch.hegarc.ig.json.SerialisationJson;
 import ch.hegarc.ig.xml.MainUnmarshalling;
 import org.apache.commons.cli.*;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Console {
@@ -17,6 +18,7 @@ public class Console {
     final private String CMD_EXIT = "exit";
     final private String CMD_ADD = "add";
     final private String CMD_DELETE = "delete";
+    final private String CMD_5_DONATEURS = "donateurs";
 
     final private Option OPT_FICHIER = new Option("f", "fichier", true, "nom du fichier");
     final private Option OPT_COMP = new Option("c", "competiton", true, "nom de la competition");
@@ -133,13 +135,31 @@ public class Console {
                         String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
                         String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
 
-                        System.out.println("Insertion de " + nom + " " + prenom + " annnée "+ annee + " dans la compétition" + projectName + " en cours");
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Insertion de ").append(nom).append(" ").append(prenom)
+                                .append(" annnée ").append(annee).append(" dans la compétition")
+                                .append(projectName).append(" en cours");
+                        System.out.println(sb);
 
                         // TODO Suppression d'un athlète
                         //delete -c Paris -n test -p test -a 2002
                         List<Competition> dataWithDeletedAthlete = AthleteHandler.delete(dataJson, projectName, nom, prenom, annee);
                         dataJson = Objects.isNull(dataWithDeletedAthlete) ? dataJson : dataWithDeletedAthlete ;
                     } else {
+                        printAppHelp();
+                    }
+                    break;
+
+                case CMD_5_DONATEURS:
+                    if (cmdLine.hasOption(OPT_COMP.getOpt())){
+                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Affichage des 5 plus gros donateurs : ")
+                                .append(projectName);
+                        System.out.println(sb);
+                        //Transformer le set en liste
+                        //AthleteHandler.biggestDonator(fusionnedCompetitions, projectName);
+                    }else {
                         printAppHelp();
                     }
                     break;
@@ -201,5 +221,6 @@ public class Console {
         formatter.printHelp(CMD_EXIT, new Options());
         formatter.printHelp(CMD_ADD, new Options().addOption(OPT_COMP).addOption(OPT_NOM).addOption(OPT_PRENOM).addOption(OPT_ANNEE).addOption(OPT_PRIX), true);
         formatter.printHelp(CMD_DELETE, new Options().addOption(OPT_COMP).addOption(OPT_NOM).addOption(OPT_PRENOM).addOption(OPT_ANNEE), true);
+        formatter.printHelp(CMD_5_DONATEURS, new Options().addOption(OPT_COMP), true);
     }
 }
