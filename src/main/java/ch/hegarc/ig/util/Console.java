@@ -58,7 +58,10 @@ public class Console {
 
                         // TODO Import du fichier XML ou JSON
                         if (fileName.substring(fileName.length() - 3).equals("xml")) {
-                            dataXML = MainUnmarshalling.XMLReader(fileName);
+                            if (dataJsonAndXML.isEmpty())
+                                dataJsonAndXML = MainUnmarshalling.XMLReader(fileName);
+                            else
+                                dataXML = MainUnmarshalling.XMLReader(fileName);
                         } else {
                             if (dataJsonAndXML.isEmpty())
                                 dataJsonAndXML = DeserialisationJson.JsonReader(fileName);
@@ -71,8 +74,10 @@ public class Console {
                             if (!dataJson.isEmpty()) {
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
                                 dataJson = null;
-                            } else if (!dataXML.isEmpty())
+                            } else if (!dataXML.isEmpty()){
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
+                                dataXML = null;
+                            }
                             if (!fusionnedCompetitions.isEmpty())
                                 dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
                         }
