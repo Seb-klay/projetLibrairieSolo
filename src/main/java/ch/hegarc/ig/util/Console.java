@@ -68,11 +68,10 @@ public class Console {
 
                         if (!dataJsonAndXML.isEmpty()) {
                             Set<Competition> fusionnedCompetitions = null;
-                            if (!dataJson.isEmpty()){
+                            if (!dataJson.isEmpty()) {
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
                                 dataJson = null;
-                            }
-                            else if (!dataXML.isEmpty())
+                            } else if (!dataXML.isEmpty())
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
                             if (!fusionnedCompetitions.isEmpty())
                                 dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
@@ -120,23 +119,20 @@ public class Console {
                             && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt())
                             && cmdLine.hasOption(OPT_PRIX.getOpt())) {
 
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        String nom = cmdLine.getOptionValue(OPT_NOM.getOpt());
-                        String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
-                        String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
-                        String prix = cmdLine.getOptionValue(OPT_PRIX.getOpt());
-
-                        System.out.println("Insertion de " + nom + " " + prenom + " annnée " + annee + " dans la compétition" + projectName + " avec le prix de " + prix + " en cours");
-
                         // TODO Insertion d'un athlète
                         //import -f data.json
                         //add -c Paris -n test -p test -a 2002 -$ 32
                         //add -c Effium -n Hardman -p Julietta -a 2000 -$ 32
 
                         if (!dataJsonAndXML.isEmpty()) {
+                            String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                            String nom = cmdLine.getOptionValue(OPT_NOM.getOpt());
+                            String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
+                            String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
+                            String prix = cmdLine.getOptionValue(OPT_PRIX.getOpt());
+                            System.out.println("Insertion de " + nom + " " + prenom + " annnée " + annee + " dans la compétition" + projectName + " avec le prix de " + prix + " en cours");
                             List<Competition> dataWithAddedAthlete = AthleteHandler.add(dataJsonAndXML, projectName, nom, prenom, annee, prix);
                             dataJsonAndXML = Objects.isNull(dataWithAddedAthlete) ? dataJsonAndXML : dataWithAddedAthlete;
-                            System.out.println(dataJsonAndXML);
                         } else {
                             System.out.println("La liste est vide...");
                         }
@@ -150,21 +146,24 @@ public class Console {
                     if (cmdLine.hasOption(OPT_COMP.getOpt()) && cmdLine.hasOption(OPT_NOM.getOpt())
                             && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt())) {
 
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        String nom = cmdLine.getOptionValue(OPT_NOM.getOpt());
-                        String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
-                        String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
-
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Insertion de ").append(nom).append(" ").append(prenom)
-                                .append(" annnée ").append(annee).append(" dans la compétition")
-                                .append(projectName).append(" en cours");
-                        System.out.println(sb);
-
                         // TODO Suppression d'un athlète
                         //delete -c Paris -n test -p test -a 2002
-                        List<Competition> dataWithDeletedAthlete = AthleteHandler.delete(dataJsonAndXML, projectName, nom, prenom, annee);
-                        dataJsonAndXML = Objects.isNull(dataWithDeletedAthlete) ? dataJsonAndXML : dataWithDeletedAthlete;
+
+                        if (!dataJsonAndXML.isEmpty()) {
+                            String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                            String nom = cmdLine.getOptionValue(OPT_NOM.getOpt());
+                            String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
+                            String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("Insertion de ").append(nom).append(" ").append(prenom)
+                                    .append(" annnée ").append(annee).append(" dans la compétition")
+                                    .append(projectName).append(" en cours");
+                            System.out.println(sb);
+                            List<Competition> dataWithDeletedAthlete = AthleteHandler.delete(dataJsonAndXML, projectName, nom, prenom, annee);
+                            dataJsonAndXML = Objects.isNull(dataWithDeletedAthlete) ? dataJsonAndXML : dataWithDeletedAthlete;
+                        } else {
+                            System.out.println("La liste est vide...");
+                        }
                     } else {
                         printAppHelp();
                     }
@@ -172,73 +171,109 @@ public class Console {
 
                 case CMD_5_DONATEURS:
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
+
+                        // TODO Affichage des 5 plus gros donateurs
                         //donateurs -c Effium
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Affichage des 5 plus gros donateurs : ")
-                                .append(projectName);
-                        System.out.println(sb);
-                        AthleteHandler.biggestDonator(dataJsonAndXML, projectName);
+
+                        if (!dataJsonAndXML.isEmpty()) {
+                            String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("Affichage des 5 plus gros donateurs : ")
+                                    .append(projectName);
+                            System.out.println(sb);
+                            AthleteHandler.biggestDonator(dataJsonAndXML, projectName);
+                        } else
+                            System.out.println("La liste est vide...");
+
                     } else {
                         printAppHelp();
                     }
                     break;
                 case CMD_LISTE_SANS_DON:
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
+
+                        // TODO Affichage des athlètes sans don
                         //dons -c Effium
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Affichage de la liste des athlètes sans dons et sans annulation d'inscription : ")
-                                .append(projectName);
-                        System.out.println(sb);
-                        AthleteHandler.showPayAndInsFalse(dataJsonAndXML, projectName);
+
+                        if (!dataJsonAndXML.isEmpty()) {
+                            String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("Affichage de la liste des athlètes sans dons et sans annulation d'inscription : ")
+                                    .append(projectName);
+                            System.out.println(sb);
+                            AthleteHandler.showPayAndInsFalse(dataJsonAndXML, projectName);
+                        } else
+                            System.out.println("La liste est vide...");
                     }
                     break;
                 case CMD_LISTE_SOMME:
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
+
+                        // TODO Affichage de la somme des dons
                         //somme -c Effium
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Affichage de la somme déjà payée, somme restante et la somme totale des inscriptions : ")
-                                .append(projectName);
-                        System.out.println(sb);
-                        AthleteHandler.showSum(dataJsonAndXML, projectName);
+
+                        if (!dataJsonAndXML.isEmpty()) {
+                            String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("Affichage de la somme déjà payée, somme restante et la somme totale des inscriptions : ")
+                                    .append(projectName);
+                            System.out.println(sb);
+                            AthleteHandler.showSum(dataJsonAndXML, projectName);
+                        } else
+                            System.out.println("La liste est vide...");
                     }
                     break;
                 case CMD_LISTE_EMAIL:
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
+
+                        // TODO Affichage de la liste des emails
                         //mail -c Effium
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Affichage des e-mails des athlètes de la compétition : ")
-                                .append(projectName);
-                        System.out.println(sb);
-                        AthleteHandler.showMail(dataJsonAndXML, projectName);
+
+                        if (!dataJsonAndXML.isEmpty()) {
+                            String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("Affichage des e-mails des athlètes de la compétition : ")
+                                    .append(projectName);
+                            System.out.println(sb);
+                            AthleteHandler.showMail(dataJsonAndXML, projectName);
+                        } else
+                            System.out.println("La liste est vide...");
                     }
                     break;
 
                 case CMD_PAYS:
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
+
+                        // TODO Affichage des pays
                         //pays -c Effium
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Affichage des pays ou se déroule de la compétition : ")
-                                .append(projectName);
-                        System.out.println(sb);
-                        AthleteHandler.showPays(dataJsonAndXML, projectName);
+
+                        if (!dataJsonAndXML.isEmpty()) {
+                            String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("Affichage des pays ou se déroule de la compétition : ")
+                                    .append(projectName);
+                            System.out.println(sb);
+                            AthleteHandler.showPays(dataJsonAndXML, projectName);
+                        } else
+                            System.out.println("La liste est vide...");
                     }
                     break;
-
                 case CMD_CATEGORIE:
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
+
+                        // TODO Affichage des catégories
                         //categorie -c Effium
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Définition des catégories selon une compétition : ")
-                                .append(projectName);
-                        System.out.println(sb);
-                        AthleteHandler.defineCategorieAthlete(dataJsonAndXML, projectName);
-                        System.out.println(dataJsonAndXML);
+
+                        if (!dataJsonAndXML.isEmpty()) {
+                            String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("Définition des catégories selon une compétition : ")
+                                    .append(projectName);
+                            System.out.println(sb);
+                            AthleteHandler.defineCategorieAthlete(dataJsonAndXML, projectName);
+                        } else {
+                            System.out.println("La liste est vide...");
+                        }
                     }
                     break;
 
