@@ -2,7 +2,6 @@ package ch.hegarc.ig.util;
 
 import ch.hegarc.ig.business.Athlete;
 import ch.hegarc.ig.business.Competition;
-import org.apache.commons.math3.geometry.euclidean.twod.hull.AklToussaintHeuristic;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -11,6 +10,12 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class AthleteHandler {
+    public static Integer getIndexOfListOfCompetitionByAttributeProjectName(List<Competition> competitions, String projectName) {
+        return IntStream.range(0, competitions.size())
+                .filter(competition -> projectName.equals(competitions.get(competition).getName()))
+                .findFirst()
+                .orElse(-1);
+    }
     public static HashSet<Competition> fusionListsCompetitions(List<Competition> competition1, List<Competition> competition2){
         System.out.println("Fusion liste \n");
         HashSet<Competition> competitions = new HashSet<>(competition1);
@@ -40,10 +45,7 @@ public class AthleteHandler {
             System.out.println("Aucune compétitions enregistrées");
             return null;
         }
-        Integer index = IntStream.range(0, competitions.size())
-                .filter(competition -> projectName.equals(competitions.get(competition).getName()))
-                .findFirst()
-                .orElse(-1);
+        Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1){
             StringBuilder sb = new StringBuilder();
             sb.append("Aucune compétitions trouvé au nom de ");
@@ -71,48 +73,45 @@ public class AthleteHandler {
             c.setAthletes(athleteFusioned);
             competitions.set(index, c);
             StringBuilder sbAthlete = new StringBuilder();
-            sbAthlete.append("L'athlète ");
-            sbAthlete.append(prenom);
-            sbAthlete.append(" ");
-            sbAthlete.append(nom);
-            sbAthlete.append(" ");
-            sbAthlete.append(annee);
-            sbAthlete.append( " de prix " );
-            sbAthlete.append(prix);
-            sbAthlete.append(" de la compétition ");
-            sbAthlete.append(projectName);
-            sbAthlete.append(" à été ajouté");
+            sbAthlete.append("L'athlète ")
+                    .append(prenom)
+                    .append(" ")
+                    .append(nom)
+                    .append(" ")
+                    .append(annee)
+                    .append( " de prix " )
+                    .append(prix)
+                    .append(" de la compétition ")
+                    .append(projectName)
+                    .append(" à été ajouté");
             System.out.println(sbAthlete);
             return competitions;
         }
     }
 
-    public static List<Competition> delete(List<Competition> Competitions, String projectName, String nom, String prenom, String annee) {
-        Integer index = IntStream.range(0, Competitions.size())
-                .filter(competition -> projectName.equals(Competitions.get(competition).getName()))
-                .findFirst()
-                .orElse(-1);
+    public static List<Competition> delete(List<Competition> competitions, String projectName, String nom, String prenom, String annee) {
+        Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);;
         if (index == -1)
             return null;
-        Competition c = Competitions.get(index);
+        Competition c = competitions.get(index);
         List<Athlete> athletes = c.getAthletes();
 
         try {
             int readAnnee = Integer.parseInt(annee);
             if (athletes.removeIf(a -> a.getNom().equals(nom) && a.getPrNom().equals(prenom) && a.getAnnee() == readAnnee)) {
-                Competitions.set(index, c);
+                competitions.set(index, c);
                 StringBuilder sbAthlete = new StringBuilder();
-                sbAthlete.append("L'athlète ");
-                sbAthlete.append(prenom);
-                sbAthlete.append(" ");
-                sbAthlete.append(nom);
-                sbAthlete.append(" ");
-                sbAthlete.append(annee);
-                sbAthlete.append(" de la compétition ");
-                sbAthlete.append(projectName);
-                sbAthlete.append(" à été supprimé");
+                sbAthlete.append("L'athlète ")
+                        .append(prenom)
+                        .append(" ")
+                        .append(nom)
+                        .append(" ")
+                        .append(annee)
+                        .append(" de la compétition ")
+                        .append(projectName)
+                        .append(" à été supprimé");
                 System.out.println(sbAthlete);
-                return Competitions;
+                return competitions;
             }
             else
                 return null;
@@ -121,11 +120,8 @@ public class AthleteHandler {
             return null;
         }
     }
-    public static void biggestDonator(List<Competition> competitions, String nameCompetition) {
-        Integer index = IntStream.range(0, competitions.size())
-                .filter(competition -> nameCompetition.equals(competitions.get(competition).getName()))
-                .findFirst()
-                .orElse(-1);
+    public static void biggestDonator(List<Competition> competitions, String projectName) {
+        Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);;
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
         else {
@@ -146,10 +142,7 @@ public class AthleteHandler {
     }
 
     public static void showPayAndInsFalse(List<Competition> competitions, String projectName){
-        Integer index = IntStream.range(0, competitions.size())
-                .filter(competition -> projectName.equals(competitions.get(competition).getName()))
-                .findFirst()
-                .orElse(-1);
+        Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
         else{
@@ -170,10 +163,7 @@ public class AthleteHandler {
     }
 
     public static void showSum(List<Competition> competitions, String projectName) {
-        Integer index = IntStream.range(0, competitions.size())
-                .filter(competition -> projectName.equals(competitions.get(competition).getName()))
-                .findFirst()
-                .orElse(-1);
+        Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
         else {
@@ -204,10 +194,7 @@ public class AthleteHandler {
     }
 
     public static void showMail(List<Competition> competitions, String projectName) {
-        Integer index = IntStream.range(0, competitions.size())
-                .filter(competition -> projectName.equals(competitions.get(competition).getName()))
-                .findFirst()
-                .orElse(-1);
+        Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
         else {
@@ -225,10 +212,7 @@ public class AthleteHandler {
     }
 
     public static void showPays(List<Competition> competitions, String projectName) {
-        Integer index = IntStream.range(0, competitions.size())
-                .filter(competition -> projectName.equals(competitions.get(competition).getName()))
-                .findFirst()
-                .orElse(-1);
+        Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
         else {
@@ -247,10 +231,7 @@ public class AthleteHandler {
     }
 
     public static void defineCategorieAthlete(List<Competition> competitions, String projectName) {
-        Integer index = IntStream.range(0, competitions.size())
-                .filter(competition -> projectName.equals(competitions.get(competition).getName()))
-                .findFirst()
-                .orElse(-1);
+        Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
         else {

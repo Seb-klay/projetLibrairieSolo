@@ -66,19 +66,14 @@ public class Console {
                                 dataJson = DeserialisationJson.JsonReader(fileName);
                         }
 
-                        if ((!dataJsonAndXML.isEmpty()) && (!dataXML.isEmpty())) {
-                            Set<Competition> fusionnedCompetitions;
-                            if (!dataJson.isEmpty()){
+                        if (!dataJsonAndXML.isEmpty()) {
+                            Set<Competition> fusionnedCompetitions = null;
+                            if ((!dataJson.isEmpty() && !dataXML.isEmpty()) || !dataJson.isEmpty())
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
-                                dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
-                            } else{
+                            else if (!dataXML.isEmpty())
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
+                            if (!fusionnedCompetitions.isEmpty())
                                 dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
-                            }
-                        } else if (!dataJsonAndXML.isEmpty() && !dataJson.isEmpty()){
-                            Set<Competition> fusionnedCompetitions;
-                            fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
-                            dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
                         }
                     } else {
                         printAppHelp();
