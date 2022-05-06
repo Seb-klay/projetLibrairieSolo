@@ -17,12 +17,16 @@ import java.util.Objects;
 public class Athlete implements Comparable<Athlete> {
 
     private long id;
+    private String genre;
     @JsonProperty("prenom")
     private String prNom;
     private String nom;
     private String email;
+    private String pays;
     private String ville;
     private int annee;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String categorie;
     @JsonProperty("paye")
     private boolean pay;
     @JsonProperty("annule")
@@ -39,12 +43,13 @@ public class Athlete implements Comparable<Athlete> {
     public Athlete() {
     }
 
-    public Athlete(long id, String prNom, String nom, String email, String langue, String adresse, String ville, String monnaie, long somme, boolean pay, boolean annul, int annee, LocalDate dateInscription, LocalDate dateVersement) {
-        super(); //sert à quelque chose ?
+    public Athlete(long id, String genre, String prNom, String nom, String email, String pays, String langue, String adresse, String ville, String monnaie, long somme, boolean pay, boolean annul, int annee, LocalDate dateInscription, LocalDate dateVersement) {
         this.id = id;
+        this.genre = genre;
         this.prNom = prNom;
         this.nom = nom;
         this.email = email;
+        this.pays = pays;
         this.ville = ville;
         this.somme = somme;
         this.annee = annee;
@@ -60,6 +65,14 @@ public class Athlete implements Comparable<Athlete> {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public String getPrNom() {
@@ -86,6 +99,14 @@ public class Athlete implements Comparable<Athlete> {
         this.email = email;
     }
 
+    public String getPays() {
+        return pays;
+    }
+
+    public void setPays(String pays){
+        this.pays = pays;
+    }
+
     public String getVille() {
         return ville;
     }
@@ -108,6 +129,14 @@ public class Athlete implements Comparable<Athlete> {
 
     public void setAnnee(int annee) {
         this.annee = annee;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
     }
 
     public boolean isPay() {
@@ -149,6 +178,9 @@ public class Athlete implements Comparable<Athlete> {
         strBuilder.append("id= ");
         strBuilder.append(id);
         strBuilder.append("\n");
+        strBuilder.append("genre= ");
+        strBuilder.append(genre);
+        strBuilder.append("\n");
         strBuilder.append("prénom= ");
         strBuilder.append(prNom);
         strBuilder.append("\n");
@@ -158,11 +190,17 @@ public class Athlete implements Comparable<Athlete> {
         strBuilder.append("email= ");
         strBuilder.append(email);
         strBuilder.append("\n");
+        strBuilder.append("pays= ");
+        strBuilder.append(pays);
+        strBuilder.append("\n");
         strBuilder.append("ville= ");
         strBuilder.append(ville);
         strBuilder.append("\n");
         strBuilder.append("annee= ");
         strBuilder.append(annee);
+        strBuilder.append("\n");
+        strBuilder.append("categorie= ");
+        strBuilder.append(categorie);
         strBuilder.append("\n");
         strBuilder.append("somme= ");
         strBuilder.append(somme);

@@ -48,11 +48,10 @@ public class RecordHandler extends DefaultHandler {
         }
         if (localName.equals("athletes")) {
             competition.getAthletes().add(athlete);
-            //competition.getSortedAthletes().add(athlete);
             isAthlete = false;
         }
         if (localName.equals("genre")) {
-            //rien
+            athlete.setGenre(texte.toString());
         }
         if (localName.equals("prenom")) {
             athlete.setPrNom(texte.toString());
@@ -67,7 +66,7 @@ public class RecordHandler extends DefaultHandler {
             athlete.setEmail(texte.toString());
         }
         if (localName.equals("pays")) {
-
+            athlete.setPays(texte.toString());
         }
         if (localName.equals("ville")) {
             athlete.setVille(texte.toString());

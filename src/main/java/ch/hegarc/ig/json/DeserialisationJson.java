@@ -28,9 +28,9 @@ public class DeserialisationJson {
             om.setDateFormat(df);
             listCompetition = om.readValue(new File(filename), new TypeReference<List<Competition>>() {});
 
-            for (Competition c: (ArrayList<Competition>) listCompetition) {
+            /*for (Competition c: (ArrayList<Competition>) listCompetition) {
                 logger.log(Level.INFO, c.toString());
-            }
+            }*/
             return listCompetition;
 
         } catch (IOException ex) {
