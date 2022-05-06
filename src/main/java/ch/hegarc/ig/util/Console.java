@@ -72,8 +72,10 @@ public class Console {
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
                             else if (!dataXML.isEmpty())
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
-                            if (!fusionnedCompetitions.isEmpty())
+                            if (!fusionnedCompetitions.isEmpty()){
                                 dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
+                                dataJson = null;
+                            }
                         }
                     } else {
                         printAppHelp();
