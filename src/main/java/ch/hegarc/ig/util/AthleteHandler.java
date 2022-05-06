@@ -70,6 +70,7 @@ public class AthleteHandler {
             }
             List<Athlete> athleteFusioned;
             athleteFusioned = fusionListsAthletes(athletes, new Athlete(id, null, prenom, nom, null, null, null, null, null, null, readPrix, false, false, readAnnee, LocalDate.now(), null));
+            Collections.sort(athleteFusioned);
             c.setAthletes(athleteFusioned);
             competitions.set(index, c);
             StringBuilder sbAthlete = new StringBuilder();
