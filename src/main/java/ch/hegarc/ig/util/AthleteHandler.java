@@ -4,24 +4,27 @@ import ch.hegarc.ig.business.Athlete;
 import ch.hegarc.ig.business.Competition;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class AthleteHandler {
-    public static HashSet<Competition> fusionLists(List<Competition> competition1, List<Competition> competition2){
+    public static HashSet<Competition> fusionListsCompetitions(List<Competition> competition1, List<Competition> competition2){
         HashSet<Competition> competitions = new HashSet<>(competition1);
-        System.out.println("Début de la fusion : ");
         competitions.addAll(competition2);
         return competitions;
+    }
+
+    public static List<Athlete> fusionListsAthletes(List<Athlete> athletes, Athlete a){
+        HashSet<Athlete> listeAthletes = new HashSet<>(athletes);
+        listeAthletes.add(a);
+        return listeAthletes.stream().collect(Collectors.toList());
     }
 
     public static List<Competition> sortList(List<Competition> competitions){
         List<Competition> compets = competitions;
 
-        System.out.println("Début du tri : ");
         for (Competition competition : compets) {
             Collections.sort(competition.getAthletes());
         }
@@ -29,26 +32,26 @@ public class AthleteHandler {
         return compets;
     }
 
-    public static List<Competition> add(List<Competition> Competitions, String projectName, String nom, String prenom, String annee, String prix) {
-        if (Competitions == null) {
+    public static List<Competition> add(List<Competition> competitions, String projectName, String nom, String prenom, String annee, String prix) {
+        if (competitions == null) {
             System.out.println("Aucune compétitions enregistrées");
             return null;
         }
-        Integer index = IntStream.range(0, Competitions.size())
-                .filter(competition -> projectName.equals(Competitions.get(competition).getName()))
+        Integer index = IntStream.range(0, competitions.size())
+                .filter(competition -> projectName.equals(competitions.get(competition).getName()))
                 .findFirst()
                 .orElse(-1);
         if (index == -1){
             StringBuilder sb = new StringBuilder();
-            sb.append("Aucune compétitions trouvé à au nom de ");
+            sb.append("Aucune compétitions trouvé au nom de ");
             sb.append(projectName);
             System.out.println(sb);
             return null;
         }
         else {
-            Competition c = Competitions.get(index);
+            Competition c = competitions.get(index);
             long id = c.getAthletes().stream().map(u -> u.getId()).max(Comparator.naturalOrder()).get() + 1;
-            ArrayList<Athlete> athletes = (ArrayList<Athlete>) Competitions.get(index).getAthletes();
+            List<Athlete> athletes = competitions.get(index).getAthletes();
 
             int readAnnee = -1;
             long readPrix = -1;
@@ -60,9 +63,10 @@ public class AthleteHandler {
                 System.out.println("L'année ou le prix n'est pas un nombre");
                 return null;
             }
-            athletes.add(new Athlete(id, prenom, nom, null, null, null, null, null, readPrix, false, false, readAnnee, LocalDate.now(), null));
-            c.setAthletes(athletes);
-            Competitions.set(index, c);
+            List<Athlete> athleteFusioned;
+            athleteFusioned = fusionListsAthletes(athletes, new Athlete(id, prenom, nom, null, null, null, null, null, readPrix, false, false, readAnnee, LocalDate.now(), null));
+            c.setAthletes(athleteFusioned);
+            competitions.set(index, c);
             StringBuilder sbAthlete = new StringBuilder();
             sbAthlete.append("L'athlète ");
             sbAthlete.append(prenom);
@@ -76,7 +80,7 @@ public class AthleteHandler {
             sbAthlete.append(projectName);
             sbAthlete.append(" à été ajouté");
             System.out.println(sbAthlete);
-            return Competitions;
+            return competitions;
         }
     }
 
@@ -126,9 +130,9 @@ public class AthleteHandler {
             Competition c = competitions.get(index);
             List<Athlete> athletes = sortBiggestDonator(c.getAthletes());
             for (Athlete athlete : athletes) {
-                sb.append(athlete.getPrNom()).append(" ").append(athlete.getNom()).append(" ").append(athlete.getSomme());
-                System.out.println(sb);
+                sb.append(athlete.getPrNom()).append(" ").append(athlete.getNom()).append(" ").append(athlete.getSomme()).append("\n");
             }
+            System.out.println(sb);
         }
     }
 

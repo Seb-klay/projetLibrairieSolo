@@ -1,14 +1,13 @@
 package ch.hegarc.ig.util;
 
-import ch.hegarc.ig.business.Athlete;
 import ch.hegarc.ig.business.Competition;
 import ch.hegarc.ig.json.DeserialisationJson;
 import ch.hegarc.ig.json.SerialisationJson;
 import ch.hegarc.ig.xml.MainUnmarshalling;
 import org.apache.commons.cli.*;
 
-import java.sql.SQLOutput;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Console {
 
@@ -34,10 +33,8 @@ public class Console {
 
         Scanner command = new Scanner(System.in);
         System.out.println("Entrer votre commande: ");
-        List<Competition> dataJson = new ArrayList<>();
+        List<Competition> dataJsonAndXML = new ArrayList<>();
         List<Competition> dataXML = new ArrayList<>();
-        List<Competition> sortedCompetitions = new ArrayList<>();
-        Set<Competition> fusionnedCompetitions = new HashSet<>();
 
         boolean running = true;
         while (running) {
@@ -56,12 +53,13 @@ public class Console {
                         if (fileName.substring(fileName.length() - 3).equals("xml")) {
                             dataXML = MainUnmarshalling.XMLReader(fileName);
                         } else {
-                            dataJson = DeserialisationJson.JsonReader(fileName);
+                            dataJsonAndXML = DeserialisationJson.JsonReader(fileName);
                         }
 
-                        if (dataJson != null && dataXML != null) {
-                            sortedCompetitions = AthleteHandler.sortList(dataXML);
-                            fusionnedCompetitions = AthleteHandler.fusionLists(dataJson, dataXML);
+                        if ((!dataJsonAndXML.isEmpty()) && (!dataXML.isEmpty())) {
+                            Set<Competition> fusionnedCompetitions ;
+                            fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
+                            dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
                         }
                     } else {
                         printAppHelp();
@@ -76,7 +74,7 @@ public class Console {
                         System.out.println("Export du " + projectName + " dans le fichier " + fileName);
 
                         // TODO Export du fichier JSON
-                        SerialisationJson.JsonWriter(fileName, projectName, dataJson);
+                        SerialisationJson.JsonWriter(fileName, projectName, dataJsonAndXML);
 
 
                     } else if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
@@ -84,7 +82,7 @@ public class Console {
                         System.out.println("Export dans le fichier " + fileName);
                         String projectName = null;
                         // TODO Export du fichier JSON
-                        SerialisationJson.JsonWriter(fileName, projectName, dataJson);
+                        SerialisationJson.JsonWriter(fileName, projectName, dataJsonAndXML);
                     } else {
                         printAppHelp();
                     }
@@ -118,8 +116,15 @@ public class Console {
                         //import -f data.json
                         //add -c Paris -n test -p test -a 2002 -$ 32
 
-                        List<Competition> dataWithAddedAthlete = AthleteHandler.add(dataJson, projectName, nom, prenom, annee, prix);
-                        dataJson = Objects.isNull(dataWithAddedAthlete) ? dataJson : dataWithAddedAthlete ;
+                        //add -c Effium -n Hardman -p Julietta -a 2000 -$ 32
+                        //Effium
+                        //Julietta
+                        //Hardman
+                        //2000
+
+                        List<Competition> dataWithAddedAthlete = AthleteHandler.add(dataJsonAndXML, projectName, nom, prenom, annee, prix);
+                        dataJsonAndXML = Objects.isNull(dataWithAddedAthlete) ? dataJsonAndXML : dataWithAddedAthlete ;
+                        System.out.println(dataJsonAndXML);
 
                     } else {
                         printAppHelp();
@@ -143,8 +148,8 @@ public class Console {
 
                         // TODO Suppression d'un athlète
                         //delete -c Paris -n test -p test -a 2002
-                        List<Competition> dataWithDeletedAthlete = AthleteHandler.delete(dataJson, projectName, nom, prenom, annee);
-                        dataJson = Objects.isNull(dataWithDeletedAthlete) ? dataJson : dataWithDeletedAthlete ;
+                        List<Competition> dataWithDeletedAthlete = AthleteHandler.delete(dataJsonAndXML, projectName, nom, prenom, annee);
+                        dataJsonAndXML = Objects.isNull(dataWithDeletedAthlete) ? dataJsonAndXML : dataWithDeletedAthlete ;
                     } else {
                         printAppHelp();
                     }
@@ -157,8 +162,7 @@ public class Console {
                         sb.append("Affichage des 5 plus gros donateurs : ")
                                 .append(projectName);
                         System.out.println(sb);
-                        //Transformer le set en liste
-                        //AthleteHandler.biggestDonator(fusionnedCompetitions, projectName);
+                        AthleteHandler.biggestDonator(dataJsonAndXML, projectName);
                     }else {
                         printAppHelp();
                     }

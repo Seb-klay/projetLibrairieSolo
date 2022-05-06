@@ -5,6 +5,8 @@ import ch.hegarc.ig.business.Competition;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,8 @@ public class RecordHandler extends DefaultHandler {
     private Athlete athlete;
     private StringBuffer texte;
     private boolean isAthlete = false ;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -78,10 +82,15 @@ public class RecordHandler extends DefaultHandler {
             athlete.setAnnul(Boolean.parseBoolean(texte.toString()));
         }
         if (localName.equals("dateInscription")) {
-            //athlete.setDateInscription(LocalDate.parse(texte.toString()));
+            LocalDate fmtr = LocalDate.parse(texte.toString(), formatter);
+            athlete.setDateInscription(fmtr);
         }
         if (localName.equals("dateVersement")) {
-            //athlete.setDateVersement(LocalDate.parse(texte.toString()));
+            String tempDateString = texte.toString();
+            if (!tempDateString.isEmpty()){
+                LocalDate fmtr = LocalDate.parse(texte.toString(), formatter);
+                athlete.setDateVersement(fmtr);
+            }
         }
     }
 
