@@ -2,7 +2,14 @@ package ch.hegarc.ig.util;
 
 import ch.hegarc.ig.business.Athlete;
 import ch.hegarc.ig.business.Competition;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -214,8 +221,9 @@ public class AthleteHandler {
 
     public static void showPays(List<Competition> competitions, String projectName) {
         Integer index = getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
-        if (index == -1)
+        if (index == -1){
             System.out.println("Pas de compétition trouvée à ce nom");
+        }
         else {
             Set<String> pays = new HashSet<>();
             StringBuilder sb = new StringBuilder();
@@ -250,5 +258,49 @@ public class AthleteHandler {
                 }
             }
         }
+    }
+
+    public static void generationStatsExcel(List<Competition> competitions){
+        Set<String> pays = new HashSet<>();
+        // Nouveau document, nouvel onglet
+        XSSFWorkbook wb = new XSSFWorkbook();
+        XSSFSheet sheet = wb.createSheet("Stats compétitions");
+
+        int rowNb = 0;
+        int colNb = 0;
+        XSSFRow row = sheet.createRow(rowNb);
+        XSSFCell cell;
+
+        pays = getPaysInList(competitions);
+
+        int colPays = 1;
+
+        for (String p : pays){
+            cell = row.createCell(colPays);
+            cell.setCellValue(p);
+            colPays += 1;
+        }
+
+        cell = row.createCell(colPays);
+        cell.setCellValue("Total");
+        Font font = wb.createFont();
+        font.setBold(true);
+
+        rowNb += 1;
+        cell = row.createCell(rowNb);
+        cell.setCellValue("Somme des dons");
+
+
+
+    }
+
+    public static Set<String> getPaysInList(List<Competition> competitions){
+        Set<String> pays = new HashSet<>();
+        for (Competition c: competitions ) {
+            for (Athlete a : c.getAthletes()) {
+                pays.add(a.getPays());
+            }
+        }
+        return pays;
     }
 }

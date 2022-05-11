@@ -1,6 +1,5 @@
 package ch.hegarc.ig.util;
 
-import ch.hegarc.ig.business.Athlete;
 import ch.hegarc.ig.business.Competition;
 import ch.hegarc.ig.json.DeserialisationJson;
 import ch.hegarc.ig.json.SerialisationJson;
@@ -74,7 +73,7 @@ public class Console {
                             if (!dataJson.isEmpty()) {
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
                                 dataJson = null;
-                            } else if (!dataXML.isEmpty()){
+                            } else if (!dataXML.isEmpty()) {
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
                                 dataXML = null;
                             }
@@ -109,9 +108,22 @@ public class Console {
                     break;
 
                 case CMD_STATS:
-
                     // TODO Calcule des stats des competitions
-
+                    if (cmdLine.hasOption(OPT_COMP.getOpt())) {
+                        List<Competition> competitions = new ArrayList<>();
+                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                        if (!dataJsonAndXML.isEmpty()){
+                            int iCompetition = AthleteHandler.getIndexOfListOfCompetitionByAttributeProjectName(dataJsonAndXML, projectName);
+                            competitions.add(dataJsonAndXML.get(iCompetition));
+                            System.out.println("Création du fichier Excel par rapport à une compétition");
+                            AthleteHandler.generationStatsExcel(competitions);
+                        }
+                    } else if (!dataJsonAndXML.isEmpty()) {
+                        System.out.println("Création du fichier Excel");
+                        AthleteHandler.generationStatsExcel(dataJsonAndXML);
+                    } else {
+                        printAppHelp();
+                    }
                     break;
 
                 case CMD_EXIT:
