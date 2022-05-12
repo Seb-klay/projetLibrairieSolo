@@ -77,8 +77,9 @@ public class Console {
                                 fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
                                 dataXML = null;
                             }
-                            if (!fusionnedCompetitions.isEmpty())
+                            if (fusionnedCompetitions != null) {
                                 dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
+                            }
                         }
                     } else {
                         printAppHelp();
@@ -86,16 +87,13 @@ public class Console {
                     break;
 
                 case CMD_EXPORT:
+                    // export -f test.json -c Effium ou export -f test.json
                     if (cmdLine.hasOption(OPT_FICHIER.getOpt()) && cmdLine.hasOption(OPT_COMP.getOpt())) {
-
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
                         String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
                         System.out.println("Export du " + projectName + " dans le fichier " + fileName);
-
                         // TODO Export du fichier JSON
                         SerialisationJson.JsonWriter(fileName, projectName, dataJsonAndXML);
-
-
                     } else if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
                         System.out.println("Export dans le fichier " + fileName);
@@ -109,6 +107,7 @@ public class Console {
 
                 case CMD_STATS:
                     // TODO Calcule des stats des competitions
+                    // stats ou stats -c Effium
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
                         List<Competition> competitions = new ArrayList<>();
                         String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
