@@ -113,9 +113,14 @@ public class Console {
                         String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
                         if (!dataJsonAndXML.isEmpty()){
                             int iCompetition = AthleteHandler.getIndexOfListOfCompetitionByAttributeProjectName(dataJsonAndXML, projectName);
-                            competitions.add(dataJsonAndXML.get(iCompetition));
-                            System.out.println("Création du fichier Excel par rapport à une compétition");
-                            AthleteHandler.generationStatsExcel(competitions);
+                            if (iCompetition != -1){
+                                competitions.add(dataJsonAndXML.get(iCompetition));
+                                System.out.println("Création du fichier Excel par rapport à une compétition");
+                                AthleteHandler.generationStatsExcel(competitions);
+                            } 
+                            else {
+                               System.out.println("Aucune compétition n'existe à ce nom");
+                            }
                         }
                     } else if (!dataJsonAndXML.isEmpty()) {
                         System.out.println("Création du fichier Excel");
