@@ -53,10 +53,12 @@ public class Console {
                 case CMD_IMPORT:
                     if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
-                        System.out.println("Import du fichier " + fileName);
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Import du fichier ").append(fileName);
+                        System.out.println(sb);
 
                         // TODO Import du fichier XML ou JSON
-                        if (fileName.substring(fileName.length() - 3).equals("xml")) {
+                        if (fileName.endsWith("xml")) {
                             if (dataJsonAndXML.isEmpty())
                                 dataJsonAndXML = MainUnmarshalling.XMLReader(fileName);
                             else
@@ -71,14 +73,14 @@ public class Console {
                         if (!dataJsonAndXML.isEmpty()) {
                             Set<Competition> fusionnedCompetitions = null;
                             if (!dataJson.isEmpty()) {
-                                fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
+                                fusionnedCompetitions = CompetitionHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
                                 dataJson = null;
                             } else if (!dataXML.isEmpty()) {
-                                fusionnedCompetitions = AthleteHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
+                                fusionnedCompetitions = CompetitionHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
                                 dataXML = null;
                             }
                             if (fusionnedCompetitions != null) {
-                                dataJsonAndXML = AthleteHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
+                                dataJsonAndXML = CompetitionHandler.sortList(fusionnedCompetitions.stream().collect(Collectors.toList()));
                             }
                         }
                     } else {
@@ -91,12 +93,16 @@ public class Console {
                     if (cmdLine.hasOption(OPT_FICHIER.getOpt()) && cmdLine.hasOption(OPT_COMP.getOpt())) {
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
                         String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        System.out.println("Export du " + projectName + " dans le fichier " + fileName);
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Export du projet ").append(projectName).append(" dans le fichier ").append(fileName);
+                        System.out.println(sb);
                         // TODO Export du fichier JSON
                         SerialisationJson.JsonWriter(fileName, projectName, dataJsonAndXML);
                     } else if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
-                        System.out.println("Export dans le fichier " + fileName);
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Export dans le fichier ").append(fileName);
+                        System.out.println(sb);
                         String projectName = null;
                         // TODO Export du fichier JSON
                         SerialisationJson.JsonWriter(fileName, projectName, dataJsonAndXML);
@@ -112,19 +118,21 @@ public class Console {
                         List<Competition> competitions = new ArrayList<>();
                         String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
                         if (!dataJsonAndXML.isEmpty()){
-                            int iCompetition = AthleteHandler.getIndexOfListOfCompetitionByAttributeProjectName(dataJsonAndXML, projectName);
+                            int iCompetition = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(dataJsonAndXML, projectName);
                             if (iCompetition != -1){
                                 competitions.add(dataJsonAndXML.get(iCompetition));
                                 System.out.println("Création du fichier Excel par rapport à une compétition");
-                                AthleteHandler.generationStatsExcel(competitions);
+                                ExcelHandler.generationStatsExcel(competitions);
                             } 
                             else {
                                System.out.println("Aucune compétition n'existe à ce nom");
                             }
                         }
-                    } else if (!dataJsonAndXML.isEmpty()) {
+                    } else if (!dataJsonAndXML.isEmpty() && !(cmdLine.hasOption(OPT_NOM.getOpt())
+                        || cmdLine.hasOption(OPT_PRENOM.getOpt()) || cmdLine.hasOption(OPT_ANNEE.getOpt())
+                        || cmdLine.hasOption(OPT_PRIX.getOpt()) || cmdLine.hasOption(OPT_FICHIER.getOpt()))) {
                         System.out.println("Création du fichier Excel");
-                        AthleteHandler.generationStatsExcel(dataJsonAndXML);
+                        ExcelHandler.generationStatsExcel(dataJsonAndXML);
                     } else {
                         printAppHelp();
                     }
@@ -151,7 +159,11 @@ public class Console {
                             String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
                             String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
                             String prix = cmdLine.getOptionValue(OPT_PRIX.getOpt());
-                            System.out.println("Insertion de " + nom + " " + prenom + " annnée " + annee + " dans la compétition" + projectName + " avec le prix de " + prix + " en cours");
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("Insertion de ").append(nom).append(" ").append(prenom)
+                                    .append(" année ").append(annee).append(" dans la compétition ").append(projectName)
+                                    .append(" avec un prix de ").append(prix).append( "en cours");
+                            System.out.println(sb);
                             List<Competition> dataWithAddedAthlete = AthleteHandler.add(dataJsonAndXML, projectName, nom, prenom, annee, prix);
                             dataJsonAndXML = Objects.isNull(dataWithAddedAthlete) ? dataJsonAndXML : dataWithAddedAthlete;
                         } else {
