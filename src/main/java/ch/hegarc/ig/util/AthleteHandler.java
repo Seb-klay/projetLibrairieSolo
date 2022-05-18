@@ -97,20 +97,23 @@ public class AthleteHandler {
         }
     }
 
-    public static void biggestDonator(List<Competition> competitions, String projectName) {
+    public static List<Athlete> biggestDonator(List<Competition> competitions, String projectName) {
         Integer index = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
-        ;
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
         else {
             StringBuilder sb = new StringBuilder();
             Competition c = competitions.get(index);
             List<Athlete> athletes = sortBiggestDonator(c.getAthletes());
+            List<Athlete> athltesBiggest = new ArrayList<>();
             for (Athlete athlete : athletes) {
+                athltesBiggest.add(athlete);
                 sb.append(athlete.getPrNom()).append(" ").append(athlete.getNom()).append(" ").append(athlete.getSomme()).append("\n");
             }
             System.out.println(sb);
+            return athltesBiggest;
         }
+        return null;
     }
 
     public static List<Athlete> sortBiggestDonator(List<Athlete> athletes) {
@@ -119,15 +122,17 @@ public class AthleteHandler {
                 .limit(5).collect(Collectors.toList());
     }
 
-    public static void showPayAndInsFalse(List<Competition> competitions, String projectName) {
+    public static List<Athlete> showPayAndInsFalse(List<Competition> competitions, String projectName) {
         Integer index = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
         else {
             List<Athlete> athletes = competitions.get(index).getAthletes();
+            List<Athlete> athletesNotPaid = new ArrayList<>();
             StringBuilder sb = new StringBuilder();
             for (Athlete a : athletes) {
-                if ((!a.isPay()) && (!a.isAnnul())) {
+                if ((!a.isPay()) && !(a.isAnnul())) {
+                    athletesNotPaid.add(a);
                     sb.append(a.getPrNom())
                             .append(" ")
                             .append(a.getNom())
@@ -137,10 +142,28 @@ public class AthleteHandler {
                 }
             }
             System.out.println(sb);
+            return athletesNotPaid;
         }
+        return null;
+    }
+    public static int nbInscr(List<Competition> competitions, String projectName) {
+        Integer index = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
+        if (index == -1)
+            System.out.println("Pas de compétition trouvée à ce nom");
+        else {
+            List<Athlete> athletes = competitions.get(index).getAthletes();
+            int count = 0;
+            for (Athlete a : athletes) {
+                if (!a.isAnnul()) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        return -1;
     }
 
-    public static void showSum(List<Competition> competitions, String projectName) {
+    public static int showSum(List<Competition> competitions, String projectName) {
         Integer index = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
@@ -168,10 +191,12 @@ public class AthleteHandler {
                     .append(sommeTotale)
                     .append(" CHF.");
             System.out.println(sb);
+            return sommeTotale;
         }
+        return -1;
     }
 
-    public static void showMail(List<Competition> competitions, String projectName) {
+    public static String showMail(List<Competition> competitions, String projectName) {
         Integer index = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1)
             System.out.println("Pas de compétition trouvée à ce nom");
@@ -186,10 +211,12 @@ public class AthleteHandler {
                 sb.append(a.getEmail());
             }
             System.out.println(sb);
+            return sb.toString();
         }
+        return null;
     }
 
-    public static void showPays(List<Competition> competitions, String projectName) {
+    public static List<String> showPays(List<Competition> competitions, String projectName) {
         Integer index = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(competitions, projectName);
         if (index == -1) {
             System.out.println("Pas de compétition trouvée à ce nom");
@@ -205,7 +232,9 @@ public class AthleteHandler {
                         .append("\n");
             }
             System.out.println(sb);
+            return pays.stream().collect(Collectors.toList());
         }
+        return null;
     }
 
     public static void defineCategorieAthlete(List<Competition> competitions, String projectName) {

@@ -123,6 +123,7 @@ public class Console {
                                 competitions.add(dataJsonAndXML.get(iCompetition));
                                 System.out.println("Création du fichier Excel par rapport à une compétition");
                                 ExcelHandler.generationStatsExcel(competitions);
+                                //PDFHandler.generatePDF(dataJsonAndXML); competition
                             } 
                             else {
                                System.out.println("Aucune compétition n'existe à ce nom");
@@ -133,6 +134,7 @@ public class Console {
                         || cmdLine.hasOption(OPT_PRIX.getOpt()) || cmdLine.hasOption(OPT_FICHIER.getOpt()))) {
                         System.out.println("Création du fichier Excel");
                         ExcelHandler.generationStatsExcel(dataJsonAndXML);
+                        PDFHandler.generatePDF(dataJsonAndXML);
                     } else {
                         printAppHelp();
                     }

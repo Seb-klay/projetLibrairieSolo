@@ -47,11 +47,18 @@ public class ExcelHandler {
         font.setBold(true);
         style.setFont(font);
 
+        StringBuilder sbFileName = new StringBuilder();
+
+
         if (competitions.size() > 1) {
             cell = row.createCell(colPays);
             cell.setCellValue("Total");
             row.getCell(colPays).setCellStyle(style);
+            sbFileName.append("competitions").append(".xlsx");
         }
+        else
+            sbFileName.append(competitions.get(0).getName()).append(".xlsx");
+
         row = sheet.createRow(++rowNb);
         cell = row.createCell(colNb);
         cell.setCellValue("Somme des dons");
@@ -126,7 +133,9 @@ public class ExcelHandler {
             colNb += 1;
         }
 
-        try (OutputStream fileOut = new FileOutputStream("stats.xlsx")) {
+
+
+        try (OutputStream fileOut = new FileOutputStream(sbFileName.toString())) {
             wb.write(fileOut);
             System.out.println("Excel créé avec succès !");
         } catch (FileNotFoundException e) {
