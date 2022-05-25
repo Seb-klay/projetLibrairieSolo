@@ -216,7 +216,7 @@ public class Console {
                             sb.append("Affichage des 5 plus gros donateurs : ")
                                     .append(projectName);
                             System.out.println(sb);
-                            AthleteHandler.biggestDonator(dataJsonAndXML, projectName);
+                            AthleteHandler.biggestDonator(dataJsonAndXML, projectName, true);
                         } else
                             System.out.println("La liste est vide...");
 
@@ -236,7 +236,7 @@ public class Console {
                             sb.append("Affichage de la liste des athlètes sans dons et sans annulation d'inscription : ")
                                     .append(projectName);
                             System.out.println(sb);
-                            AthleteHandler.showPayAndInsFalse(dataJsonAndXML, projectName);
+                            AthleteHandler.showPayAndInsFalse(dataJsonAndXML, projectName, true);
                         } else
                             System.out.println("La liste est vide...");
                     }
@@ -253,7 +253,7 @@ public class Console {
                             sb.append("Affichage de la somme déjà payée, somme restante et la somme totale des inscriptions : ")
                                     .append(projectName);
                             System.out.println(sb);
-                            AthleteHandler.showSum(dataJsonAndXML, projectName);
+                            AthleteHandler.showSum(dataJsonAndXML, projectName, true);
                         } else
                             System.out.println("La liste est vide...");
                     }
@@ -270,7 +270,7 @@ public class Console {
                             sb.append("Affichage des e-mails des athlètes de la compétition : ")
                                     .append(projectName);
                             System.out.println(sb);
-                            AthleteHandler.showMail(dataJsonAndXML, projectName);
+                            AthleteHandler.showMail(dataJsonAndXML, projectName, true);
                         } else
                             System.out.println("La liste est vide...");
                     }
@@ -288,7 +288,7 @@ public class Console {
                             sb.append("Affichage des pays ou se déroule de la compétition : ")
                                     .append(projectName);
                             System.out.println(sb);
-                            AthleteHandler.showPays(dataJsonAndXML, projectName);
+                            AthleteHandler.showPays(dataJsonAndXML, projectName, true);
                         } else
                             System.out.println("La liste est vide...");
                     }

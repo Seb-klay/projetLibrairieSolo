@@ -8,13 +8,16 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
+import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PDFHandler {
-    public static void generatePDF(List<Competition> competitions) {
+public class PDFHandler extends PDFTextStripper{
+    public PDFHandler() throws IOException {
+    }
+
+    public static void generatePDF(List<Competition> competitions)  {
         StringBuilder sbFileName = new StringBuilder();
         int nbCompetitions = competitions.size();
         String competitionsName = "";
@@ -32,8 +35,11 @@ public class PDFHandler {
             // Créer un un objet Font et en sélectionner un font de base
             PDFont fontPlain = PDType1Font.HELVETICA;
             PDFont fontBold = PDType1Font.HELVETICA_BOLD;
+            int nbPages = nbCompetitions * 2;
+            int iCompetition = 0;
+            boolean isPageMail = false;
 
-            for (int i = 0; i < nbCompetitions * 2; i++) {
+            for (int i = 0; i < nbPages; i++) {
                 pages.add(new PDPage(PDRectangle.A4));
 
                 if (i == 0)
@@ -43,30 +49,33 @@ public class PDFHandler {
 
                 //Débute un nouveau flux qui contient tout le contenu de la page qui va être créé
                 PDPageContentStream cos = new PDPageContentStream(document, pages.get(i));
+                int limitPage = 30;
+                int limitPage2 = 16;
+                int comptageHeightPage = 0;
 
-
-                if (i % 2 == 0) {
+                if (!isPageMail) {
                     // Définit un contenu de texte à partir de la police de caractère, bouge le curseur et définit le texte
                     cos.beginText();
                     cos.setFont(fontBold, 14);
                     // Titre plus ou moins centré
                     cos.newLineAtOffset(rect.getWidth() / 2 - 20, rect.getHeight() - 100);
-                    cos.showText("Bilan - " + competitions.get((int) Math.floor(i / 2)).getName());
+                    cos.showText("Bilan - " + competitions.get(iCompetition).getName());
                     cos.endText();
-                    competitionsName = competitions.get((int) Math.floor(i / 2)).getName();
+                    competitionsName = competitions.get(iCompetition).getName();
+                    PDRectangle mediabox = pages.get(i).getMediaBox();
 
                     cos.setLeading(20f);
                     cos.setFont(fontPlain, 14);
                     cos.beginText();
-                    cos.newLineAtOffset(100, 600);
+                    cos.newLineAtOffset(100, 700);
                     StringBuilder sb = new StringBuilder();
 
-                    sb.append("5 plus grosses donateurs : ");
+                    sb.append("5 plus gros donateurs : ");
                     cos.showText(sb.toString());
                     cos.newLine();
 
 
-                    List<Athlete> top5Donators = AthleteHandler.biggestDonator(competitions, competitionsName);
+                    List<Athlete> top5Donators = AthleteHandler.biggestDonator(competitions, competitionsName, false);
 
                     for (Athlete athlete : top5Donators) {
                         sb.setLength(0);
@@ -76,49 +85,156 @@ public class PDFHandler {
                     }
 
                     sb.setLength(0);
+                    cos.newLine();
                     sb.append("Athlètes n'ayant pas payés : ");
                     cos.showText(sb.toString());
                     cos.newLine();
 
-                    List<Athlete> notPaidAthletes = AthleteHandler.showPayAndInsFalse(competitions, competitionsName);
+                    List<Athlete> notPaidAthletes = AthleteHandler.showPayAndInsFalse(competitions, competitionsName, false);
 
+
+                    int iAthlete = 0;
                     for (Athlete athlete : notPaidAthletes) {
+                        if (comptageHeightPage == limitPage) {
+                            cos.endText();
+                            cos.close();
+                            pages.add(new PDPage(PDRectangle.A4));
+
+                            i++;
+                            nbPages++;
+                            document.addPage(pages.get(i));
+                            //Débute un nouveau flux qui contient tout le contenu de la page qui va être créé
+                            cos = new PDPageContentStream(document, pages.get(i));
+                            cos.setLeading(20f);
+                            cos.setFont(fontPlain, 14);
+                            cos.beginText();
+                            cos.newLineAtOffset(100, 700);
+                            limitPage = 35;
+                            limitPage2 = 1;
+                            comptageHeightPage= 0;
+                        }
+                        iAthlete++;
                         sb.setLength(0);
                         sb.append(athlete.getNom()).append(" ").append(athlete.getPrNom()).append(" : ").append(athlete.getSomme()).append(".-");
                         cos.showText(sb.toString());
-
+                        if (iAthlete % 2 == 0){
+                            limitPage2++;
+                            cos.newLine();
+                            comptageHeightPage++;
+                        }
                     }
 
                     cos.newLine();
 
                     sb.setLength(0);
-                    sb.append("Somme totale des dons : ").append(AthleteHandler.showSum(competitions, competitionsName));
+                    cos.newLine();
+                    sb.append("Somme totale des dons : ").append(AthleteHandler.showSum(competitions, competitionsName, false));
                     cos.showText(sb.toString());
                     cos.newLine();
 
                     sb.setLength(0);
+                    cos.newLine();
                     sb.append("Athlètes qui sont inscrits : ").append(AthleteHandler.nbInscr(competitions, competitionsName));
                     cos.showText(sb.toString());
                     cos.newLine();
 
                     sb.setLength(0);
-                    sb.append("Pays participants : ").append(AthleteHandler.showPays(competitions, competitionsName));
-                    cos.showText(sb.toString());
                     cos.newLine();
+                    sb.append("Pays participants : ");
+                    cos.showText(sb.toString());
+                    int iPays = 0;
+                    cos.newLine();
+                    limitPage = 35 - limitPage2 ;
+                    limitPage2 = 0;
+                    comptageHeightPage = 0;
 
-                }else {
+                    /*
+                    mediabox = pages.get(i).getMediaBox();
+                   margin = 72;
+                    startY = mediabox.getUpperRightY() - margin;*/
 
+                    for (String pays : AthleteHandler.showPays(competitions, competitionsName, false)) {
+                        if (comptageHeightPage == limitPage) {
+                            cos.endText();
+                            cos.close();
+                            pages.add(new PDPage(PDRectangle.A4));
+                            i++;
+                            nbPages++;
+                            document.addPage(pages.get(i));
+                            //Débute un nouveau flux qui contient tout le contenu de la page qui va être créé
+                            cos = new PDPageContentStream(document, pages.get(i));
+                            cos.setLeading(20f);
+                            cos.setFont(fontPlain, 14);
+                            cos.beginText();
+                            cos.newLineAtOffset(100, 700);
+                            limitPage = 35;
+                            limitPage2 = 1;
+                            comptageHeightPage= 0;
+                        }
+                        iPays++;
+                        sb.setLength(0);
+                        sb.append(pays).append(" ");
+                        cos.showText(sb.toString());
+                        if (iPays % 5 == 0){
+                            limitPage2++;
+                            cos.newLine();
+                            comptageHeightPage++;
+                        }
+                    }
+
+                    cos.newLine();
+                    isPageMail = true;
+
+                } else {
+                    competitionsName = competitions.get(iCompetition).getName();
                     cos.setLeading(20f);
                     cos.setFont(fontPlain, 14);
                     cos.beginText();
-                    cos.newLineAtOffset(100, 600);
+                    //cos.newLineAtOffset(100, 600);
+                    cos.newLineAtOffset(100, 800);
                     StringBuilder sb = new StringBuilder();
                     sb.append("Mails des athletes inscrits : ");
-                    sb.append(AthleteHandler.showMail(competitions, competitionsName));
-                    
                     cos.showText(sb.toString());
-                }
+                    int iMail = 0;
+                    cos.newLine();
+                    limitPage = 35;
+                    comptageHeightPage = 0;
+                    boolean premierPassage = false;
+                    for (String mail : AthleteHandler.showMail(competitions, competitionsName, false)) {
+                        iMail++;
+                        if (comptageHeightPage == limitPage) {
+                            cos.endText();
+                            cos.close();
+                            pages.add(new PDPage(PDRectangle.A4));
+                            i++;
+                            nbPages++;
+                            document.addPage(pages.get(i));
+                            //Débute un nouveau flux qui contient tout le contenu de la page qui va être créé
+                            cos = new PDPageContentStream(document, pages.get(i));
+                            cos.setLeading(20f);
+                            cos.setFont(fontPlain, 14);
+                            cos.beginText();
+                            cos.newLineAtOffset(100, 700);
+                            limitPage = 35;
+                            comptageHeightPage= 0;
+                        }
+                        sb.setLength(0);
+                        if (premierPassage) {
+                            sb.append(";");
+                        }
+                        sb.append(mail);
+                        cos.showText(sb.toString());
+                        if (iMail % 2 == 0){
+                            cos.newLine();
+                            comptageHeightPage++;
+                        }
+                        premierPassage = true;
+                    }
 
+                    cos.showText(sb.toString());
+                    iCompetition++;
+                    isPageMail = false;
+                }
                 cos.endText();
                 cos.close();
             }
@@ -126,7 +242,7 @@ public class PDFHandler {
             document.save(sbFileName.toString());
             document.close();
 
-            System.out.println("PDF created");
+            System.out.println("PDF créé");
 
 
         } catch (
