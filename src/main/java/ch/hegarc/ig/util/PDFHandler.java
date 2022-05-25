@@ -228,7 +228,8 @@ public class PDFHandler extends PDFTextStripper{
                         }
                         sb.setLength(0);
                         sb.append(mail);
-                        if(cptMail == listeMails.size())
+
+                        if(cptMail + 1 == listeMails.size())
                             pasDernierPassage = false;
                         if (pasDernierPassage) {
                             sb.append(";");
@@ -241,8 +242,6 @@ public class PDFHandler extends PDFTextStripper{
                         }
 
                     }
-
-                    cos.showText(sb.toString());
                     iCompetition++;
                     isPageMail = false;
                 }
