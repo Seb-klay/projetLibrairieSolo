@@ -89,8 +89,8 @@ public class PDFHandler extends PDFTextStripper{
 
                     List<Athlete> notPaidAthletes = AthleteHandler.showPayAndInsFalse(competitions, competitionsName, false);
 
-
-                    int iAthlete = 0;
+                    boolean pasDernierPassage = true;
+                    int cptAthlete = 0;
                     for (Athlete athlete : notPaidAthletes) {
                         if (comptageHeightPage == limitPage) {
                             cos.endText();
@@ -109,11 +109,19 @@ public class PDFHandler extends PDFTextStripper{
                             cptLignePage = 1;
                             comptageHeightPage= 0;
                         }
-                        iAthlete++;
+
                         sb.setLength(0);
+
                         sb.append(athlete.getNom()).append(" ").append(athlete.getPrNom()).append(" : ").append(athlete.getSomme()).append(".-");
+                        if (cptAthlete + 1 == notPaidAthletes.size())
+                            pasDernierPassage = false;
+                        if (pasDernierPassage) {
+                            sb.append(",");
+                        }
+                        sb.append(" ");
                         cos.showText(sb.toString());
-                        if (iAthlete % 2 == 0){
+                        cptAthlete++;
+                        if (cptAthlete % 2 == 0){
                             cptLignePage++;
                             cos.newLine();
                             comptageHeightPage++;
@@ -143,8 +151,10 @@ public class PDFHandler extends PDFTextStripper{
                     limitPage = 35 - cptLignePage ;
                     cptLignePage = 0;
                     comptageHeightPage = 0;
-
-                    for (String pays : AthleteHandler.showPays(competitions, competitionsName, false)) {
+                    pasDernierPassage = true;
+                    int cptPays = 1;
+                    List<String> listePays = AthleteHandler.showPays(competitions, competitionsName, false);
+                    for (String pays : listePays) {
                         if (comptageHeightPage == limitPage) {
                             cos.endText();
                             cos.close();
@@ -164,7 +174,15 @@ public class PDFHandler extends PDFTextStripper{
                         }
                         iPays++;
                         sb.setLength(0);
-                        sb.append(pays).append(" ");
+
+                        sb.append(pays);
+                        if (cptPays == listePays.size())
+                            pasDernierPassage = false;
+                        if (pasDernierPassage) {
+                            sb.append(",");
+                        }
+                        sb.append(" ");
+                        cptPays++;
                         cos.showText(sb.toString());
                         if (iPays % 5 == 0){
                             cptLignePage++;
@@ -181,18 +199,17 @@ public class PDFHandler extends PDFTextStripper{
                     cos.setLeading(20f);
                     cos.setFont(fontPlain, 14);
                     cos.beginText();
-                    //cos.newLineAtOffset(100, 600);
                     cos.newLineAtOffset(100, 800);
                     StringBuilder sb = new StringBuilder();
                     sb.append("Mails des athletes inscrits : ");
                     cos.showText(sb.toString());
-                    int iMail = 0;
+                    int cptMail = 0;
                     cos.newLine();
                     limitPage = 35;
                     comptageHeightPage = 0;
-                    boolean premierPassage = false;
-                    for (String mail : AthleteHandler.showMail(competitions, competitionsName, false)) {
-                        iMail++;
+                    boolean pasDernierPassage = true;
+                    List<String> listeMails = AthleteHandler.showMail(competitions, competitionsName, false);
+                    for (String mail : listeMails) {
                         if (comptageHeightPage == limitPage) {
                             cos.endText();
                             cos.close();
@@ -210,16 +227,19 @@ public class PDFHandler extends PDFTextStripper{
                             comptageHeightPage= 0;
                         }
                         sb.setLength(0);
-                        if (premierPassage) {
+                        sb.append(mail);
+                        if(cptMail == listeMails.size())
+                            pasDernierPassage = false;
+                        if (pasDernierPassage) {
                             sb.append(";");
                         }
-                        sb.append(mail);
                         cos.showText(sb.toString());
-                        if (iMail % 2 == 0){
+                        cptMail++;
+                        if (cptMail % 2 == 0){
                             cos.newLine();
                             comptageHeightPage++;
                         }
-                        premierPassage = true;
+
                     }
 
                     cos.showText(sb.toString());
