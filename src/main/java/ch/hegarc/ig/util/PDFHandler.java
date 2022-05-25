@@ -41,16 +41,13 @@ public class PDFHandler extends PDFTextStripper{
 
             for (int i = 0; i < nbPages; i++) {
                 pages.add(new PDPage(PDRectangle.A4));
-
                 if (i == 0)
                     rect = pages.get(i).getMediaBox();
-
                 document.addPage(pages.get(i));
-
                 //Débute un nouveau flux qui contient tout le contenu de la page qui va être créé
                 PDPageContentStream cos = new PDPageContentStream(document, pages.get(i));
                 int limitPage = 30;
-                int limitPage2 = 16;
+                int cptLignePage = 16;
                 int comptageHeightPage = 0;
 
                 if (!isPageMail) {
@@ -99,7 +96,6 @@ public class PDFHandler extends PDFTextStripper{
                             cos.endText();
                             cos.close();
                             pages.add(new PDPage(PDRectangle.A4));
-
                             i++;
                             nbPages++;
                             document.addPage(pages.get(i));
@@ -110,7 +106,7 @@ public class PDFHandler extends PDFTextStripper{
                             cos.beginText();
                             cos.newLineAtOffset(100, 700);
                             limitPage = 35;
-                            limitPage2 = 1;
+                            cptLignePage = 1;
                             comptageHeightPage= 0;
                         }
                         iAthlete++;
@@ -118,7 +114,7 @@ public class PDFHandler extends PDFTextStripper{
                         sb.append(athlete.getNom()).append(" ").append(athlete.getPrNom()).append(" : ").append(athlete.getSomme()).append(".-");
                         cos.showText(sb.toString());
                         if (iAthlete % 2 == 0){
-                            limitPage2++;
+                            cptLignePage++;
                             cos.newLine();
                             comptageHeightPage++;
                         }
@@ -144,14 +140,9 @@ public class PDFHandler extends PDFTextStripper{
                     cos.showText(sb.toString());
                     int iPays = 0;
                     cos.newLine();
-                    limitPage = 35 - limitPage2 ;
-                    limitPage2 = 0;
+                    limitPage = 35 - cptLignePage ;
+                    cptLignePage = 0;
                     comptageHeightPage = 0;
-
-                    /*
-                    mediabox = pages.get(i).getMediaBox();
-                   margin = 72;
-                    startY = mediabox.getUpperRightY() - margin;*/
 
                     for (String pays : AthleteHandler.showPays(competitions, competitionsName, false)) {
                         if (comptageHeightPage == limitPage) {
@@ -168,7 +159,7 @@ public class PDFHandler extends PDFTextStripper{
                             cos.beginText();
                             cos.newLineAtOffset(100, 700);
                             limitPage = 35;
-                            limitPage2 = 1;
+                            cptLignePage = 1;
                             comptageHeightPage= 0;
                         }
                         iPays++;
@@ -176,7 +167,7 @@ public class PDFHandler extends PDFTextStripper{
                         sb.append(pays).append(" ");
                         cos.showText(sb.toString());
                         if (iPays % 5 == 0){
-                            limitPage2++;
+                            cptLignePage++;
                             cos.newLine();
                             comptageHeightPage++;
                         }

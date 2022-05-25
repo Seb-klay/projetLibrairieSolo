@@ -208,7 +208,7 @@ public class AthleteHandler {
             StringBuilder sb = new StringBuilder();
             boolean premierPassage = false;
             for (Athlete a : competitions.get(index).getAthletes()) {
-                if (!a.getEmail().isEmpty()) {
+                if (a.getEmail() != null) {
                     if (premierPassage) {
                         sb.append(";");
                     }

@@ -121,7 +121,7 @@ public class Console {
                             int iCompetition = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(dataJsonAndXML, projectName);
                             if (iCompetition != -1){
                                 competitions.add(dataJsonAndXML.get(iCompetition));
-                                System.out.println("Création du fichier Excel par rapport à une compétition");
+                                System.out.println("Création du fichier Excel et PDF par rapport à une compétition");
                                 ExcelHandler.generationStatsExcel(competitions);
                                 PDFHandler.generatePDF(competitions);
                             } 
@@ -132,7 +132,7 @@ public class Console {
                     } else if (!dataJsonAndXML.isEmpty() && !(cmdLine.hasOption(OPT_NOM.getOpt())
                         || cmdLine.hasOption(OPT_PRENOM.getOpt()) || cmdLine.hasOption(OPT_ANNEE.getOpt())
                         || cmdLine.hasOption(OPT_PRIX.getOpt()) || cmdLine.hasOption(OPT_FICHIER.getOpt()))) {
-                        System.out.println("Création du fichier Excel");
+                        System.out.println("Création du fichier Excel et PDF");
                         ExcelHandler.generationStatsExcel(dataJsonAndXML);
                         PDFHandler.generatePDF(dataJsonAndXML);
                     } else {
