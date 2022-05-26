@@ -13,8 +13,6 @@ public class Console {
 
     final private String CMD_IMPORT = "import";
     final private String CMD_EXPORT = "export";
-    final private String CMD_STATS = "stats";
-    final private String CMD_EXIT = "exit";
     final private String CMD_ADD = "add";
     final private String CMD_DELETE = "delete";
     final private String CMD_5_DONATEURS = "donateurs";
@@ -23,6 +21,8 @@ public class Console {
     final private String CMD_LISTE_EMAIL = "mail";
     final private String CMD_PAYS = "pays";
     final private String CMD_CATEGORIE = "categorie";
+    final private String CMD_STATS = "stats";
+    final private String CMD_EXIT = "exit";
 
     final private Option OPT_FICHIER = new Option("f", "fichier", true, "nom du fichier");
     final private Option OPT_COMP = new Option("c", "competiton", true, "nom de la competition");
@@ -73,9 +73,13 @@ public class Console {
                         if (!dataJsonAndXML.isEmpty()) {
                             Set<Competition> fusionnedCompetitions = null;
                             if (!dataJson.isEmpty()) {
+                                System.out.println();
+                                System.out.println("Préparation des traitements de la liste...");
                                 fusionnedCompetitions = CompetitionHandler.fusionListsCompetitions(dataJsonAndXML, dataJson);
                                 dataJson = null;
                             } else if (!dataXML.isEmpty()) {
+                                System.out.println();
+                                System.out.println("Préparation des traitements de la liste...");
                                 fusionnedCompetitions = CompetitionHandler.fusionListsCompetitions(dataJsonAndXML, dataXML);
                                 dataXML = null;
                             }
@@ -89,7 +93,6 @@ public class Console {
                     break;
 
                 case CMD_EXPORT:
-                    // export -f test.json -c Effium ou export -f test.json
                     if (cmdLine.hasOption(OPT_FICHIER.getOpt()) && cmdLine.hasOption(OPT_COMP.getOpt())) {
                         String fileName = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
                         String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -111,49 +114,12 @@ public class Console {
                     }
                     break;
 
-                case CMD_STATS:
-                    // TODO Calcule des stats des competitions
-                    // stats ou stats -c Effium
-                    if (cmdLine.hasOption(OPT_COMP.getOpt())) {
-                        List<Competition> competitions = new ArrayList<>();
-                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
-                        if (!dataJsonAndXML.isEmpty()){
-                            int iCompetition = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(dataJsonAndXML, projectName);
-                            if (iCompetition != -1){
-                                competitions.add(dataJsonAndXML.get(iCompetition));
-                                System.out.println("Création du fichier Excel et PDF par rapport à une compétition");
-                                ExcelHandler.generationStatsExcel(competitions);
-                                PDFHandler.generatePDF(competitions);
-                            } 
-                            else {
-                               System.out.println("Aucune compétition n'existe à ce nom");
-                            }
-                        }
-                    } else if (!dataJsonAndXML.isEmpty() && !(cmdLine.hasOption(OPT_NOM.getOpt())
-                        || cmdLine.hasOption(OPT_PRENOM.getOpt()) || cmdLine.hasOption(OPT_ANNEE.getOpt())
-                        || cmdLine.hasOption(OPT_PRIX.getOpt()) || cmdLine.hasOption(OPT_FICHIER.getOpt()))) {
-                        System.out.println("Création du fichier Excel et PDF");
-                        ExcelHandler.generationStatsExcel(dataJsonAndXML);
-                        PDFHandler.generatePDF(dataJsonAndXML);
-                    } else {
-                        printAppHelp();
-                    }
-                    break;
-
-                case CMD_EXIT:
-                    System.out.println("Fermeture!");
-                    running = false;
-                    break;
-
                 case CMD_ADD:
                     if (cmdLine.hasOption(OPT_COMP.getOpt()) && cmdLine.hasOption(OPT_NOM.getOpt())
                             && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt())
                             && cmdLine.hasOption(OPT_PRIX.getOpt())) {
 
                         // TODO Insertion d'un athlète
-                        //import -f data.json
-                        //add -c Paris -n test -p test -a 2002 -$ 32
-                        //add -c Effium -n Hardman -p Julietta -a 2000 -$ 32
 
                         if (!dataJsonAndXML.isEmpty()) {
                             String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -164,7 +130,7 @@ public class Console {
                             StringBuilder sb = new StringBuilder();
                             sb.append("Insertion de ").append(nom).append(" ").append(prenom)
                                     .append(" année ").append(annee).append(" dans la compétition ").append(projectName)
-                                    .append(" avec un prix de ").append(prix).append( "en cours");
+                                    .append(" avec un prix de ").append(prix).append( " en cours");
                             System.out.println(sb);
                             List<Competition> dataWithAddedAthlete = AthleteHandler.add(dataJsonAndXML, projectName, nom, prenom, annee, prix);
                             dataJsonAndXML = Objects.isNull(dataWithAddedAthlete) ? dataJsonAndXML : dataWithAddedAthlete;
@@ -182,7 +148,6 @@ public class Console {
                             && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt())) {
 
                         // TODO Suppression d'un athlète
-                        //delete -c Paris -n test -p test -a 2002
 
                         if (!dataJsonAndXML.isEmpty()) {
                             String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -190,8 +155,8 @@ public class Console {
                             String prenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
                             String annee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
                             StringBuilder sb = new StringBuilder();
-                            sb.append("Insertion de ").append(nom).append(" ").append(prenom)
-                                    .append(" annnée ").append(annee).append(" dans la compétition")
+                            sb.append("Suppression de ").append(nom).append(" ").append(prenom)
+                                    .append(" annnée ").append(annee).append(" dans la compétition ")
                                     .append(projectName).append(" en cours");
                             System.out.println(sb);
                             List<Competition> dataWithDeletedAthlete = AthleteHandler.delete(dataJsonAndXML, projectName, nom, prenom, annee);
@@ -208,7 +173,6 @@ public class Console {
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
 
                         // TODO Affichage des 5 plus gros donateurs
-                        //donateurs -c Effium
 
                         if (!dataJsonAndXML.isEmpty()) {
                             String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -228,7 +192,6 @@ public class Console {
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
 
                         // TODO Affichage des athlètes sans don
-                        //dons -c Effium
 
                         if (!dataJsonAndXML.isEmpty()) {
                             String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -245,7 +208,6 @@ public class Console {
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
 
                         // TODO Affichage de la somme des dons
-                        //somme -c Effium
 
                         if (!dataJsonAndXML.isEmpty()) {
                             String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -262,7 +224,6 @@ public class Console {
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
 
                         // TODO Affichage de la liste des emails
-                        //mail -c Effium
 
                         if (!dataJsonAndXML.isEmpty()) {
                             String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -280,7 +241,6 @@ public class Console {
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
 
                         // TODO Affichage des pays
-                        //pays -c Effium
 
                         if (!dataJsonAndXML.isEmpty()) {
                             String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -297,7 +257,6 @@ public class Console {
                     if (cmdLine.hasOption(OPT_COMP.getOpt())) {
 
                         // TODO Affichage des catégories
-                        //categorie -c Effium
 
                         if (!dataJsonAndXML.isEmpty()) {
                             String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
@@ -310,6 +269,39 @@ public class Console {
                             System.out.println("La liste est vide...");
                         }
                     }
+                    break;
+
+                case CMD_STATS:
+                    // TODO Calcule des stats des competitions
+                    if (cmdLine.hasOption(OPT_COMP.getOpt())) {
+                        List<Competition> competitions = new ArrayList<>();
+                        String projectName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                        if (!dataJsonAndXML.isEmpty()){
+                            int iCompetition = CompetitionHandler.getIndexOfListOfCompetitionByAttributeProjectName(dataJsonAndXML, projectName);
+                            if (iCompetition != -1){
+                                competitions.add(dataJsonAndXML.get(iCompetition));
+                                System.out.println("Création du fichier Excel et PDF par rapport à une compétition");
+                                ExcelHandler.generationStatsExcel(competitions);
+                                PDFHandler.generatePDF(competitions);
+                            }
+                            else {
+                                System.out.println("Aucune compétition n'existe à ce nom");
+                            }
+                        }
+                    } else if (!dataJsonAndXML.isEmpty() && !(cmdLine.hasOption(OPT_NOM.getOpt())
+                            || cmdLine.hasOption(OPT_PRENOM.getOpt()) || cmdLine.hasOption(OPT_ANNEE.getOpt())
+                            || cmdLine.hasOption(OPT_PRIX.getOpt()) || cmdLine.hasOption(OPT_FICHIER.getOpt()))) {
+                        System.out.println("Création du fichier Excel et PDF");
+                        ExcelHandler.generationStatsExcel(dataJsonAndXML);
+                        PDFHandler.generatePDF(dataJsonAndXML);
+                    } else {
+                        printAppHelp();
+                    }
+                    break;
+
+                case CMD_EXIT:
+                    System.out.println("Fermeture!");
+                    running = false;
                     break;
 
                 default:

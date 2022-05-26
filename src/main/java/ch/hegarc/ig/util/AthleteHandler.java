@@ -86,10 +86,11 @@ public class AthleteHandler {
                         .append(annee)
                         .append(" de la compétition ")
                         .append(projectName)
-                        .append(" à été supprimé");
+                        .append(" à été supprimé-e");
                 System.out.println(sbAthlete);
                 return competitions;
             } else
+                System.out.println("Aucune personne trouvée avec ces paramètres");
                 return null;
         } catch (Exception e) {
             System.out.println("L'année n'est pas un nombre");

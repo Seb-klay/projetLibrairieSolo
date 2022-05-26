@@ -252,7 +252,7 @@ public class PDFHandler extends PDFTextStripper{
             document.save(sbFileName.toString());
             document.close();
 
-            System.out.println("PDF créé");
+            System.out.println("PDF créé avec succès !");
 
 
         } catch (
