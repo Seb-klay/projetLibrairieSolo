@@ -196,7 +196,7 @@ exit
 
 ---
 
-##JAR
+## Fichier JAR et exécution
 Le fichier JAR se trouve dans le fichier out - artifacts - CompetitonTool_jar - Competiton.jar.
 
 Pour démarrer le programme :
