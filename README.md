@@ -4,7 +4,8 @@
 
 ## Commandes pour les manipulations de l'application
 
-À noter que les options d'une commande peuvent être executées à la suite ou une par une.
+À noter que les options d'une commande peuvent être executées 
+à la suite ou une par une.
 
 ### import
 La commande import permet d'importer les fichiers - XML et JSON - dans
@@ -12,6 +13,9 @@ une liste de l'application.
 
 Cela permettra par la suite d'effectuer des traitements dessus 
 (voir ci-dessous).
+
+Dès qu'une 2ème liste est importée, les 2 listes sont automatiquement 
+fusionnées et triées.
 
 ```
 import -f nom du fichier
@@ -117,8 +121,8 @@ somme -c Effium
 ```
 
 ### mail
-La commande mail permet d'afficher la liste des e-mails des participants d'une compétition donnée,
-chacun suivi d'un séparateur ";".
+La commande mail permet d'afficher la liste des e-mails des participants d'une
+compétition donnée, chacun suivi d'un séparateur ";".
 
 ```
 mail -c nom de la compétition
@@ -160,11 +164,15 @@ categorie -c Effium
 ```
 ### stats
 
-Cette fonctionnalité marche avec ou sans paramètre. On peut obtenir les statistiques d'une
-ou toutes les compétitions.
+Cette fonctionnalité marche avec ou sans paramètre. On peut obtenir
+les statistiques d'une ou toutes les compétitions.
 
-Cette fonctionnalité permet de créer un fichier PDF avec les informations
-comme les plus gros donateurs, les pays participants
+Cette fonctionnalité permet de créer un fichier PDF et EXCEL avec les
+informations comme les plus gros donateurs, les pays participants.
+
+NOTE : Avec le fichier Excel, il faut "activer le contenu" pour pouvoir
+afficher les sommes.
+Lorsque l'opération est terminée, le programme affiche les quittances d'exécution.
 
 ```
 stats
@@ -184,4 +192,15 @@ Aucune option n'est nécessaire.
 
 ```
 exit
+```
+
+---
+
+##JAR
+Le fichier JAR se trouve dans le fichier out - artifacts - CompetitonTool_jar - Competiton.jar.
+
+Pour démarrer le programme :
+
+```
+$ javac -jar Competiton.jar
 ```
