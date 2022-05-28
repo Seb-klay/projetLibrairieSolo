@@ -1,5 +1,14 @@
 # Projet de librairie de programmation
+---
 
+## Fichier JAR et exécution
+Le fichier JAR se trouve dans le fichier out - artifacts - CompetitonTool_jar - Competiton.jar.
+
+Pour démarrer le programme :
+
+```
+$ javac -jar Competiton.jar
+```
 ---
 
 ## Commandes pour les manipulations de l'application
@@ -192,15 +201,4 @@ Aucune option n'est nécessaire.
 
 ```
 exit
-```
-
----
-
-## Fichier JAR et exécution
-Le fichier JAR se trouve dans le fichier out - artifacts - CompetitonTool_jar - Competiton.jar.
-
-Pour démarrer le programme :
-
-```
-$ javac -jar Competiton.jar
 ```
