@@ -7,7 +7,7 @@ Le fichier JAR se trouve dans le fichier out - artifacts - CompetitonTool_jar - 
 Pour démarrer le programme :
 
 ```
-$ javac -jar Competiton.jar
+$ java -jar Competiton.jar
 ```
 ---
 
