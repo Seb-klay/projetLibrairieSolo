@@ -1,11 +1,14 @@
 package ch.hegarc.ig.util;
 
+import ch.hegarc.ig.Business.Competition;
+import ch.hegarc.ig.XML.Reader.MainDOM;
 import org.apache.commons.cli.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Console {
+    private List<Competition> competitionsXML;
 
     final private String CMD_IMPORT = "import";
     final private String CMD_EXPORT = "export";
@@ -42,6 +45,9 @@ public class Console {
                         System.out.println(sb);
 
                         // TODO Import du fichier XML ou JSON
+                        competitionsXML = new ArrayList<>();
+                        competitionsXML = MainDOM.getDataXML(fileName);
+                        System.out.println("List XML : " + competitionsXML);
 
                     } else {
                         printAppHelp();
