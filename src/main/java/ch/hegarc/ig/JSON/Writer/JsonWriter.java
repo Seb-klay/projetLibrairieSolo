@@ -1,0 +1,43 @@
+package ch.hegarc.ig.JSON.Writer;
+
+import ch.hegarc.ig.business.Competition;
+import ch.hegarc.ig.formatter.LocalDateDeserializer;
+import ch.hegarc.ig.util.Utils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
+import java.util.logging.Logger;
+
+public class JsonWriter {
+
+    private static final Logger logger = Logger.getLogger(JsonWriter.class.getName());
+    public static void generateFileJackson(String filename, Set<Competition> dataset) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataset);
+            System.out.println("Fichier créé avec l'ensemble des compétitions");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void generateFileJacksonByCompetition(String filename, String competitionName, Set<Competition> dataset) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataset);
+            Competition competition = Utils.findCompetition(competitionName, dataset);
+            if (competition.equals(null)){
+                logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+            }else {
+                objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), competition);
+                logger.info("\u001B[32m" + "Fichier créé sous le nom de <" + filename + "> avec la compétition " + competitionName + "\u001B[0m");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (NullPointerException n){
+            logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+        }
+    }
+}

@@ -1,9 +1,14 @@
-package ch.hegarc.ig.Business;
+package ch.hegarc.ig.business;
 
-import java.time.LocalDateTime;
+import ch.hegarc.ig.formatter.LocalDateDeserializer;
+import ch.hegarc.ig.formatter.LocalDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.time.LocalDate;
 import java.util.Objects;
 
-public class Athlete {
+public class Athlete implements Comparable<Athlete> {
     private int id;
     private char genre;
     private String prenom;
@@ -14,14 +19,18 @@ public class Athlete {
     private int prixInscription;
     private boolean paye;
     private boolean annule;
-    private LocalDateTime dateInscription;
-    private LocalDateTime dateVersement;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate dateInscription;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate dateVersement;
 
     public Athlete(){
 
     }
 
-    public Athlete(int id, char genre, String prenom, String nom, int annee, String email, String pays, int prixInscription, boolean paye, boolean annule, LocalDateTime dateInscription, LocalDateTime dateVersement) {
+    public Athlete(int id, char genre, String prenom, String nom, int annee, String email, String pays, int prixInscription, boolean paye, boolean annule, LocalDate dateInscription, LocalDate dateVersement) {
         this.id = id;
         this.genre = genre;
         this.prenom = prenom;
@@ -116,19 +125,19 @@ public class Athlete {
         this.annule = annule;
     }
 
-    public LocalDateTime getDateInscription() {
+    public LocalDate getDateInscription() {
         return dateInscription;
     }
 
-    public void setDateInscription(LocalDateTime dateInscription) {
+    public void setDateInscription(LocalDate dateInscription) {
         this.dateInscription = dateInscription;
     }
 
-    public LocalDateTime getDateVersement() {
+    public LocalDate getDateVersement() {
         return dateVersement;
     }
 
-    public void setDateVersement(LocalDateTime dateVersement) {
+    public void setDateVersement(LocalDate dateVersement) {
         this.dateVersement = dateVersement;
     }
 
@@ -160,6 +169,17 @@ public class Athlete {
                 ", annule=" + annule +
                 ", dateInscription=" + dateInscription +
                 ", dateVersement=" + dateVersement +
-                '}';
+                '}'+ '\n';
+    }
+
+    @Override
+    public int compareTo(Athlete athlete) {
+        int parametrePrenom, parametreNom;
+        parametrePrenom = this.prenom.compareTo(athlete.prenom);
+        parametreNom = this.nom.compareTo(athlete.nom);
+        if ((parametrePrenom) == 0){
+            return parametreNom;
+        }
+        return parametrePrenom;
     }
 }

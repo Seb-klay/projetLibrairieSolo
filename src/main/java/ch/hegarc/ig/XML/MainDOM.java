@@ -1,6 +1,5 @@
-package ch.hegarc.ig.XML.Reader;
-import ch.hegarc.ig.Business.Athlete;
-import ch.hegarc.ig.Business.Competition;
+package ch.hegarc.ig.XML;
+import ch.hegarc.ig.business.Competition;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 

@@ -1,11 +1,14 @@
-package ch.hegarc.ig.Business;
+package ch.hegarc.ig.business;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Competition {
+public class Competition implements Comparable<Competition>{
     private int id;
+    @JsonProperty("competition")
     private String libelle;
     private List<Athlete> athletes = new ArrayList<>();
 
@@ -63,5 +66,13 @@ public class Competition {
                 ", libelle='" + libelle + '\'' +
                 ", athletes=" + athletes +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Competition competition) {
+        if (this.libelle.compareTo(competition.libelle) != 0){
+            return this.libelle.compareTo(competition.libelle);
+        }
+        return 0;
     }
 }
