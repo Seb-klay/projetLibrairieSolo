@@ -4,6 +4,7 @@ import ch.hegarc.ig.JSON.Writer.JsonWriter;
 import ch.hegarc.ig.XML.MainDOM;
 import ch.hegarc.ig.business.Competition;
 import ch.hegarc.ig.JSON.Reader.JsonReader;
+import ch.hegarc.ig.excel.MainExcel;
 import org.apache.commons.cli.*;
 
 import java.util.*;
@@ -17,6 +18,7 @@ public class Console {
     final private String CMD_EXPORT = "export";
     final private String CMD_ADD = "ajouter";
     final private String CMD_DELETE = "supprimer";
+    final private String CMD_STATS = "stats";
     final private String CMD_EXIT = "exit";
 
     final private Option OPT_FICHIER = new Option("f", "fichier", true, "nom du fichier");
@@ -57,8 +59,6 @@ public class Console {
                         }
                         competitionsXmlAndJson = CompetitionHandler.sortList(competitionsList);
                         logger.info("\u001B[32m" + "Import du fichier <" + filename +  ">" + "\u001B[0m");
-                        Competition compet = Utils.findCompetition("Paris", competitionsXmlAndJson);
-                        Utils.getCategorie(compet);
                     } else {
                         printAppHelp();
                     }
@@ -111,6 +111,23 @@ public class Console {
                             logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
                         }
                     } else {
+                        printAppHelp();
+                    }
+                    break;
+
+                case CMD_STATS:
+                    String cName = cmdLine.getOptionValue(OPT_COMP.getOpt());
+                    if (cmdLine.hasOption(OPT_COMP.getOpt())){
+                        Competition compet = Utils.findCompetition(cName, competitionsXmlAndJson);
+                        if (compet != null){
+                            // TODO Création du fichier Excel pour une compétition
+                            MainExcel.excelFileOneCompetition(compet);
+                        }else {
+                            logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+                        }
+                    } else if (!cmdLine.hasOption(OPT_COMP.getOpt())){
+                        MainExcel.excelFileAllCompetitions(competitionsXmlAndJson);
+                    }else {
                         printAppHelp();
                     }
                     break;
@@ -175,6 +192,7 @@ public class Console {
         formatter.printHelp(CMD_EXPORT, new Options().addOption(OPT_FICHIER).addOption(OPT_COMP), true);
         formatter.printHelp(CMD_ADD, new Options().addOption(OPT_COMP).addOption(OPT_NOM).addOption(OPT_PRENOM).addOption(OPT_ANNEE).addOption(OPT_PRIX), true);
         formatter.printHelp(CMD_DELETE, new Options().addOption(OPT_COMP).addOption(OPT_NOM).addOption(OPT_PRENOM).addOption(OPT_ANNEE), true);
+        formatter.printHelp(CMD_STATS, new Options().addOption(OPT_COMP), true);
         formatter.printHelp(CMD_EXIT, new Options());
     }
 }

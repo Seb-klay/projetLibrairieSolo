@@ -85,16 +85,10 @@ public class Utils {
         return athletes;
     }
 
-    public static StringBuilder sums(Competition competition){
+    public static long sums(Competition competition){
         StringBuilder sb = new StringBuilder();
-        long sommePayee = competition.getAthletes().stream()
-                .filter(a -> a.isPaye() && !a.isAnnule())
-                .mapToInt(Athlete::getPrixInscription)
-                .sum();
-        long sommeRestante = competition.getAthletes().stream()
-                .filter(a -> !a.isPaye() && !a.isAnnule())
-                .mapToInt(Athlete::getPrixInscription)
-                .sum();
+        long sommePayee = sommePayee(competition);
+        long sommeRestante = sommeRestante(competition);
         long sommeTotale = sommePayee + sommeRestante;
         sb.append("----- Sommes de la compétition ").append(competition.getLibelle())
                         .append(" -----\n")
@@ -102,8 +96,24 @@ public class Utils {
                         .append("Somme restante : ").append(sommeRestante).append("\n")
                         .append("Somme totale : ").append(sommeTotale);
 
-        System.out.println(sb);
-        return sb;
+        //System.out.println(sb);
+        return sommeTotale;
+    }
+
+    public static long sommePayee(Competition competition){
+        long sommePayee = competition.getAthletes().stream()
+                .filter(a -> a.isPaye() && !a.isAnnule())
+                .mapToInt(Athlete::getPrixInscription)
+                .sum();
+        return sommePayee;
+    }
+
+    public static long sommeRestante(Competition competition){
+        long sommeRestante = competition.getAthletes().stream()
+                .filter(a -> !a.isPaye() && !a.isAnnule())
+                .mapToInt(Athlete::getPrixInscription)
+                .sum();
+        return sommeRestante;
     }
 
     public static StringBuilder getMails(Competition competition){
@@ -139,7 +149,7 @@ public class Utils {
         StringBuilder sb = new StringBuilder();
         sb.append("----- Categorie des participants de la compétition ").append(competition.getLibelle())
                 .append(" -----\n");
-        System.out.println(sb);
+        //System.out.println(sb);
         competition.getAthletes().stream()
                 .forEach(Utils::accept);
     }
@@ -161,6 +171,18 @@ public class Utils {
                 .append("Prénom : ").append(a.getPrenom()).append(" ")
                 .append("Année : ").append(a.getAnnee()).append(" ")
                 .append("Catégorie : ").append(a.getCategorie());
-        System.out.println(sb);
+        //System.out.println(sb);
+    }
+
+    public static long nbAnnulations(Competition competition){
+        return competition.getAthletes().stream()
+                .filter(Athlete::isAnnule)
+                .count();
+    }
+
+    public static long nbInscriptionByCategorie(Competition competition, String categorie){
+        return competition.getAthletes().stream()
+                .filter(a -> a.getCategorie().equals(categorie) && !a.isAnnule())
+                .count();
     }
 }

@@ -3,7 +3,6 @@ package ch.hegarc.ig.util;
 import ch.hegarc.ig.business.Competition;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CompetitionHandler {
     public static List<Competition> fusionLists(List<Competition> firstList, List<Competition> secondList){

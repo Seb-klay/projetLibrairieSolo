@@ -1,14 +1,12 @@
 package ch.hegarc.ig.JSON.Writer;
 
 import ch.hegarc.ig.business.Competition;
-import ch.hegarc.ig.formatter.LocalDateDeserializer;
 import ch.hegarc.ig.util.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 public class JsonWriter {
