@@ -7,23 +7,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
 public class JsonWriter {
 
     private static final Logger logger = Logger.getLogger(JsonWriter.class.getName());
-    public static void generateFileJackson(String filename, Set<Competition> dataset) {
+    public static void generateFileJackson(String filename, List<Competition> dataset) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataset);
-            System.out.println("Fichier créé avec l'ensemble des compétitions");
+            logger.info("\u001B[32m" + "Fichier créé sous le nom de <" + filename +  "> avec l'ensemble des compétitions" + "\u001B[0m");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void generateFileJacksonByCompetition(String filename, String competitionName, Set<Competition> dataset) {
+    public static void generateFileJacksonByCompetition(String filename, String competitionName, List<Competition> dataset) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataset);
@@ -37,7 +38,7 @@ public class JsonWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }catch (NullPointerException n){
-            logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+            logger.warning("\u001B[0m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
         }
     }
 }

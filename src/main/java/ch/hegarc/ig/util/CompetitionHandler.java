@@ -3,19 +3,19 @@ package ch.hegarc.ig.util;
 import ch.hegarc.ig.business.Competition;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CompetitionHandler {
-    public static Set<Competition> fusionLists(Set<Competition> firstList, List<Competition> secondList){
-        firstList.addAll(secondList);
-        return firstList;
+    public static List<Competition> fusionLists(List<Competition> firstList, List<Competition> secondList){
+        Set<Competition> compets = new HashSet<>(firstList);
+        compets.addAll(secondList);
+        return new ArrayList<>(compets);
     }
-    public static Set<Competition> sortList(List<Competition> competitionList){
-        Set<Competition> competitionsSorted = new HashSet<>();
+    public static List<Competition> sortList(List<Competition> competitionList){
         for (Competition competition : competitionList){
             Collections.sort(competition.getAthletes());
         }
-        competitionsSorted.addAll(competitionList);
         Collections.sort(competitionList);
-        return competitionsSorted;
+        return competitionList;
     }
 }

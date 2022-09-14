@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class Console {
-    private Set<Competition> competitionsXmlAndJson = new HashSet<>();
+    private List<Competition> competitionsXmlAndJson = new ArrayList<>();
     private static final Logger logger = Logger.getLogger(Console.class.getName());
 
     final private String CMD_IMPORT = "import";
@@ -45,10 +45,6 @@ public class Console {
                 case CMD_IMPORT:
                     if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
                         String filename = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Import du fichier ").append(filename);
-                        System.out.println(sb);
-
                         // TODO Import du fichier XML ou JSON
                         List<Competition> competitionsList;
                         if (filename.substring(filename.lastIndexOf(".") + 1).equals("xml")){
@@ -56,14 +52,13 @@ public class Console {
                         }else {
                             competitionsList = JsonReader.readSourceJackson(filename);
                         }
-                        if (competitionsXmlAndJson.isEmpty()){
-                            competitionsXmlAndJson = CompetitionHandler.sortList(competitionsList);
-                        }else {
-                            competitionsXmlAndJson = CompetitionHandler.sortList(competitionsList);
-                            competitionsXmlAndJson = CompetitionHandler.fusionLists(competitionsXmlAndJson, competitionsList);
+                        if (!competitionsXmlAndJson.isEmpty()){
+                            competitionsList = CompetitionHandler.fusionLists(competitionsXmlAndJson, competitionsList);
                         }
-                        System.out.println(competitionsXmlAndJson);
-
+                        competitionsXmlAndJson = CompetitionHandler.sortList(competitionsList);
+                        logger.info("\u001B[32m" + "Import du fichier <" + filename +  ">" + "\u001B[0m");
+                        Competition compet = Utils.findCompetition("Paris", competitionsXmlAndJson);
+                        Utils.getCategorie(compet);
                     } else {
                         printAppHelp();
                     }
@@ -73,11 +68,9 @@ public class Console {
                     String filename = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
                     String competitionName = cmdLine.getOptionValue(OPT_COMP.getOpt());
                     if ((cmdLine.hasOption(OPT_FICHIER.getOpt()) && cmdLine.hasOption(OPT_COMP.getOpt()))){
-                        logger.info("\u001B[37m" + "Export de la compétition " + competitionName + " dans le fichier " + filename + "\u001B[0m");
                         // TODO Export du fichier JSON
                         JsonWriter.generateFileJacksonByCompetition(filename, competitionName, competitionsXmlAndJson);
                     } else if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
-                        logger.info("\u001B[37m" + "Export de 'ensemble des compétitions dans le fichier " + filename + "\u001B[0m");
                         // TODO Export du fichier JSON
                         JsonWriter.generateFileJackson(filename, competitionsXmlAndJson);
                     } else {
@@ -90,10 +83,15 @@ public class Console {
                     String athNom = cmdLine.getOptionValue(OPT_NOM.getOpt());
                     String athPrenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
                     String athAnnee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
-                    String compPrice = cmdLine.getOptionValue(OPT_PRIX.getOpt());
+                    int compPrice = Integer.parseInt(cmdLine.getOptionValue(OPT_PRIX.getOpt()));
                     if ((cmdLine.hasOption(OPT_COMP.getOpt()) && cmdLine.hasOption(OPT_NOM.getOpt()) && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt()) && cmdLine.hasOption(OPT_PRIX.getOpt()))){
-                        logger.info("\u001B[37m" + "Ajout de l'athlète " + athNom + " dans la compétition " + compName + "\u001B[0m");
-                        // TODO Ajout de l'athlète
+                        Competition compet = Utils.findCompetition(compName, competitionsXmlAndJson);
+                        if (compet != null){
+                            // TODO Ajout de l'athlète
+                            competitionsXmlAndJson.add(Utils.ajoutAthlete(compet, athNom, athPrenom, athAnnee, compPrice));
+                        }else {
+                            logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+                        }
                     } else {
                         printAppHelp();
                     }
@@ -105,12 +103,10 @@ public class Console {
                     String athletePrenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
                     String athleteAnnee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
                     if ((cmdLine.hasOption(OPT_COMP.getOpt()) && cmdLine.hasOption(OPT_NOM.getOpt()) && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt()))){
-                        logger.info("\u001B[37m" + "Suppression de l'athlète " + athleteNom + " dans la compétition " + competName + "\u001B[0m");
-                        // TODO Suppression de l'athlète
                         Competition compet = Utils.findCompetition(competName, competitionsXmlAndJson);
-                        if (!compet.equals(null)){
+                        if (compet != null){
+                            // TODO Suppression de l'athlète
                             competitionsXmlAndJson.add(Utils.suppressionAthlete(compet, athleteNom, athletePrenom, athleteAnnee));
-                            System.out.println(competitionsXmlAndJson);
                         }else {
                             logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
                         }

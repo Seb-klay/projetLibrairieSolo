@@ -16,6 +16,7 @@ public class Athlete implements Comparable<Athlete> {
     private int annee;
     private String email;
     private String pays;
+    private String categorie;
     private int prixInscription;
     private boolean paye;
     private boolean annule;
@@ -99,6 +100,14 @@ public class Athlete implements Comparable<Athlete> {
 
     public void setPays(String pays) {
         this.pays = pays;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie){
+        this.categorie = categorie;
     }
 
     public int getPrixInscription() {
