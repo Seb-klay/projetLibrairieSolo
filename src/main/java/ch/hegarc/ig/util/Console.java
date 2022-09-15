@@ -1,6 +1,7 @@
 package ch.hegarc.ig.util;
 
 import ch.hegarc.ig.JSON.Writer.JsonWriter;
+import ch.hegarc.ig.PDF.MainPDF;
 import ch.hegarc.ig.XML.MainDOM;
 import ch.hegarc.ig.business.Competition;
 import ch.hegarc.ig.JSON.Reader.JsonReader;
@@ -121,7 +122,8 @@ public class Console {
                         Competition compet = Utils.findCompetition(cName, competitionsXmlAndJson);
                         if (compet != null){
                             // TODO Création du fichier Excel pour une compétition
-                            MainExcel.excelFileOneCompetition(compet);
+                            //MainExcel.excelFileOneCompetition(compet);
+                            MainPDF.writePdf(compet);
                         }else {
                             logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
                         }

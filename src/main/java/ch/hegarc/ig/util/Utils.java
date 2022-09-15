@@ -43,7 +43,9 @@ public class Utils {
 
     public static Competition suppressionAthlete(Competition competition, String athleteNom, String athletePrenom, String athleteAnnee){
         Athlete foundAthlete = competition.getAthletes().stream()
-                .filter(a -> a.getNom().equals(athleteNom) && a.getPrenom().equals(athletePrenom) && a.getAnnee() == Integer.parseInt(athleteAnnee))
+                .filter(a -> a.getNom().equals(athleteNom) &&
+                        a.getPrenom().equals(athletePrenom) &&
+                        a.getAnnee() == Integer.parseInt(athleteAnnee))
                 .findAny()
                 .orElse(null);
         if (foundAthlete != null){
@@ -58,7 +60,8 @@ public class Utils {
 
     public static List<Athlete> find5BiggestDonators(Competition competition){
         StringBuilder sb = new StringBuilder();
-        List<Athlete> athletes = competition.getAthletes().stream().sorted(Comparator.comparing(Athlete::getPrixInscription).reversed())
+        List<Athlete> athletes = competition.getAthletes().stream()
+                .sorted(Comparator.comparing(Athlete::getPrixInscription).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
         sb.append("----- 5 plus gros donateurs -----\n");
@@ -67,13 +70,14 @@ public class Utils {
                     .append(a.getPrenom()).append(" ")
                     .append(a.getPrixInscription()).append("\n");
         }
-        System.out.println(sb);
+        //System.out.println(sb);
         return athletes;
     }
 
     public static List<Athlete> hasNotPaid(Competition competition){
         StringBuilder sb = new StringBuilder();
-        List<Athlete> athletes = competition.getAthletes().stream().filter(a -> !a.isPaye() && !a.isAnnule())
+        List<Athlete> athletes = competition.getAthletes().stream()
+                .filter(a -> !a.isPaye() && !a.isAnnule())
                 .collect(Collectors.toList());
         sb.append("----- Athlètes n'ayant pas payé -----\n");
         for (Athlete a : athletes){
@@ -81,7 +85,7 @@ public class Utils {
                     .append(a.getPrenom()).append(" ")
                     .append(a.getPrixInscription()).append("\n");
         }
-        System.out.println(sb);
+        //System.out.println(sb);
         return athletes;
     }
 
@@ -116,21 +120,22 @@ public class Utils {
         return sommeRestante;
     }
 
-    public static StringBuilder getMails(Competition competition){
+    public static List<String> getMails(Competition competition){
         StringBuilder sb = new StringBuilder();
-        String emails = competition.getAthletes().stream()
+        List<String> emails = Arrays.asList(competition.getAthletes().stream()
                 .filter(a -> !a.getEmail().isEmpty())
                 .map(Athlete::getEmail)
-                .collect(Collectors.joining(" ; ", " ", " "));
+                .collect(Collectors.joining(" ; ", " ", " ")).split(";"));
         sb.append("----- Emails de la compétition ").append(competition.getLibelle())
                 .append(" -----\n")
                 .append(emails).append("\n");
 
-        System.out.println(sb);
-        return sb;
+        //Pour printer la liste avec des ";", merci de retirer le ".split" à la fin du stream emails.
+        //System.out.println(sb);
+        return emails;
     }
 
-    public static StringBuilder getPays(Competition competition){
+    public static List<String> getPays(Competition competition){
         StringBuilder sb = new StringBuilder();
         List<String> pays = competition.getAthletes().stream()
                 .map(Athlete::getPays)
@@ -141,8 +146,8 @@ public class Utils {
                 .append(" -----\n")
                 .append(pays).append("\n");
 
-        System.out.println(sb);
-        return sb;
+        //System.out.println(sb);
+        return pays;
     }
 
     public static void getCategorie(Competition competition){
@@ -183,6 +188,12 @@ public class Utils {
     public static long nbInscriptionByCategorie(Competition competition, String categorie){
         return competition.getAthletes().stream()
                 .filter(a -> a.getCategorie().equals(categorie) && !a.isAnnule())
+                .count();
+    }
+
+    public static long nbInscriptions(Competition competition){
+        return competition.getAthletes().stream()
+                .filter(a -> !a.isAnnule())
                 .count();
     }
 }
