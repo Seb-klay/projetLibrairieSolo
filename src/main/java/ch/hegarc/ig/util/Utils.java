@@ -105,34 +105,31 @@ public class Utils {
     }
 
     public static long sommePayee(Competition competition){
-        long sommePayee = competition.getAthletes().stream()
+        return competition.getAthletes().stream()
                 .filter(a -> a.isPaye() && !a.isAnnule())
                 .mapToInt(Athlete::getPrixInscription)
                 .sum();
-        return sommePayee;
     }
 
     public static long sommeRestante(Competition competition){
-        long sommeRestante = competition.getAthletes().stream()
+        return competition.getAthletes().stream()
                 .filter(a -> !a.isPaye() && !a.isAnnule())
                 .mapToInt(Athlete::getPrixInscription)
                 .sum();
-        return sommeRestante;
     }
 
     public static List<String> getMails(Competition competition){
         StringBuilder sb = new StringBuilder();
-        List<String> emails = Arrays.asList(competition.getAthletes().stream()
-                .filter(a -> !a.getEmail().isEmpty())
+        String emails = competition.getAthletes().stream()
+                .filter(a -> a.getEmail() != null && !a.getEmail().isEmpty())
                 .map(Athlete::getEmail)
-                .collect(Collectors.joining(" ; ", " ", " ")).split(";"));
+                .collect(Collectors.joining(" ; ", " ", " "));
         sb.append("----- Emails de la compétition ").append(competition.getLibelle())
                 .append(" -----\n")
                 .append(emails).append("\n");
 
-        //Pour printer la liste avec des ";", merci de retirer le ".split" à la fin du stream emails.
         //System.out.println(sb);
-        return emails;
+        return Arrays.asList(emails.split(";"));
     }
 
     public static List<String> getPays(Competition competition){

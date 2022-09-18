@@ -48,18 +48,19 @@ public class Console {
                 case CMD_IMPORT:
                     if (cmdLine.hasOption(OPT_FICHIER.getOpt())) {
                         String filename = cmdLine.getOptionValue(OPT_FICHIER.getOpt());
-                        // TODO Import du fichier XML ou JSON
                         List<Competition> competitionsList;
                         if (filename.substring(filename.lastIndexOf(".") + 1).equals("xml")){
+                            // TODO Import du fichier XML
                             competitionsList = MainDOM.getDataXML(filename);
                         }else {
+                            // TODO Import du fichier JSON
                             competitionsList = JsonReader.readSourceJackson(filename);
                         }
                         if (!competitionsXmlAndJson.isEmpty()){
                             competitionsList = CompetitionHandler.fusionLists(competitionsXmlAndJson, competitionsList);
                         }
                         competitionsXmlAndJson = CompetitionHandler.sortList(competitionsList);
-                        logger.info("\u001B[32m" + "Import du fichier <" + filename +  ">" + "\u001B[0m");
+                        logger.info("\u001B[37m" + "Import du fichier <" + filename +  ">" + "\u001B[0m");
                     } else {
                         printAppHelp();
                     }
@@ -85,13 +86,14 @@ public class Console {
                     String athPrenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
                     String athAnnee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
                     int compPrice = Integer.parseInt(cmdLine.getOptionValue(OPT_PRIX.getOpt()));
+
                     if ((cmdLine.hasOption(OPT_COMP.getOpt()) && cmdLine.hasOption(OPT_NOM.getOpt()) && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt()) && cmdLine.hasOption(OPT_PRIX.getOpt()))){
                         Competition compet = Utils.findCompetition(compName, competitionsXmlAndJson);
                         if (compet != null){
                             // TODO Ajout de l'athlète
                             competitionsXmlAndJson.add(Utils.ajoutAthlete(compet, athNom, athPrenom, athAnnee, compPrice));
                         }else {
-                            logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+                            logger.warning("\u001B[37m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
                         }
                     } else {
                         printAppHelp();
@@ -103,13 +105,14 @@ public class Console {
                     String athleteNom = cmdLine.getOptionValue(OPT_NOM.getOpt());
                     String athletePrenom = cmdLine.getOptionValue(OPT_PRENOM.getOpt());
                     String athleteAnnee = cmdLine.getOptionValue(OPT_ANNEE.getOpt());
+
                     if ((cmdLine.hasOption(OPT_COMP.getOpt()) && cmdLine.hasOption(OPT_NOM.getOpt()) && cmdLine.hasOption(OPT_PRENOM.getOpt()) && cmdLine.hasOption(OPT_ANNEE.getOpt()))){
                         Competition compet = Utils.findCompetition(competName, competitionsXmlAndJson);
                         if (compet != null){
                             // TODO Suppression de l'athlète
                             competitionsXmlAndJson.add(Utils.suppressionAthlete(compet, athleteNom, athletePrenom, athleteAnnee));
                         }else {
-                            logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+                            logger.warning("\u001B[37m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
                         }
                     } else {
                         printAppHelp();
@@ -122,13 +125,14 @@ public class Console {
                         Competition compet = Utils.findCompetition(cName, competitionsXmlAndJson);
                         if (compet != null){
                             // TODO Création du fichier Excel pour une compétition
-                            //MainExcel.excelFileOneCompetition(compet);
-                            MainPDF.writePdf(compet);
+                            MainExcel.excelFileOneCompetition(compet);
+                            MainPDF.writePdfOneCompetition(compet);
                         }else {
-                            logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+                            logger.warning("\u001B[37m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
                         }
                     } else if (!cmdLine.hasOption(OPT_COMP.getOpt())){
                         MainExcel.excelFileAllCompetitions(competitionsXmlAndJson);
+                        MainPDF.writePdfAllCompetitions(competitionsXmlAndJson);
                     }else {
                         printAppHelp();
                     }

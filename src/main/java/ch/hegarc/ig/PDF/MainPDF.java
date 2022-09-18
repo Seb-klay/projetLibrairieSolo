@@ -24,9 +24,14 @@ public class MainPDF {
     public static int fontSize = 14;
     public static int pageCounter = 0;
     public static int heightPiedPage = 0;
-    public static void writePdf(Competition competition){
 
-        String outputFileName = "compétition.pdf";
+    public static void writePdfAllCompetitions(List<Competition> competitions){
+        for (Competition competition : competitions){
+            writePdfOneCompetition(competition);
+        }
+    }
+    public static void writePdfOneCompetition(Competition competition){
+        String outputFileName = competition.getLibelle() + ".pdf";
         try {
             // Création d'un document
             PDDocument doc = new PDDocument();
@@ -119,11 +124,11 @@ public class MainPDF {
             // Pays représentés
             cos.beginText();
             cos.newLineAtOffset(margin, positionY);
-            cos.setFont(fontBold, fontSize);
             positionY = positionY - marginHeight;
             if (positionY < heightPiedPage){
                 cos = createNewPage(doc, pages, rec, fontPlain, cos);
             }
+            cos.setFont(fontBold, fontSize);
             cos.showText("Pays représentés : ");
             int indPays = 0;
             for (String pays : Utils.getPays(competition)){
@@ -169,10 +174,10 @@ public class MainPDF {
             pageCounter = 0;
             doc.close();
 
-            logger.info("\u001B[37m" + "Création du fichier PDF <" + outputFileName + ">" + "\u001B[0m");
+            logger.info("\u001B[32m" + "Création du fichier PDF <" + outputFileName + ">" + "\u001B[0m");
 
         } catch (IOException e){
-            logger.warning("\u001B[33m" + "Un problème est survenu lors de la création du fichier PDF..." + "\u001B[0m");
+            logger.warning("\u001B[33m" + "Un problème est survenu lors de la création du fichier PDF " + outputFileName + "..." + "\u001B[0m");
         }
     }
 

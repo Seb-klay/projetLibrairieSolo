@@ -28,7 +28,7 @@ public class JsonWriter {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), dataset);
             Competition competition = Utils.findCompetition(competitionName, dataset);
             if (competition.equals(null)){
-                logger.warning("\u001B[33m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
+                logger.warning("\u001B[37m" + "Aucune compétition trouvée sous ce nom..." + "\u001B[0m");
             }else {
                 objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), competition);
                 logger.info("\u001B[32m" + "Fichier créé sous le nom de <" + filename + "> avec la compétition " + competitionName + "\u001B[0m");
